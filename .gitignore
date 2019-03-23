@@ -137,6 +137,7 @@ hs_err_pid*
 # Sensitive or high-churn files:
 
 # Gradle:
+.gradle/
 
 # CMake
 

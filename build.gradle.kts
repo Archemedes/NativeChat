@@ -19,7 +19,6 @@ repositories {
     maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
