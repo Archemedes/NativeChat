@@ -27,7 +27,7 @@ class ChatListener(val plugin: Morphian) : Listener {
                 e.player.sendMessage("${DARK_RED}ERROR:$RED Could not find channel with name$WHITE $alias")
                 return
             } else {
-                channel = otherChannel
+                channel = plugin.chatManager.channelAliases.getValue(otherChannel)
             }
         }
 
