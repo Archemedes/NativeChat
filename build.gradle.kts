@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import sun.tools.jar.resources.jar
 
 plugins {
     kotlin("jvm") version "1.3.11"
@@ -29,4 +30,8 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Jar> {
+    from(configurations.runtime.map { if (it.isDirectory) it else zipTree(it) })
 }
