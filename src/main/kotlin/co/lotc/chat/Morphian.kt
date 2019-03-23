@@ -4,7 +4,16 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 class Morphian : JavaPlugin() {
+    companion object {
+        lateinit var instance: Morphian private set
+        val chatManager = instance.chatManager
+    }
+
     lateinit var chatManager : ChatManager
+
+    override fun onLoad(){
+        instance = this
+    }
 
     override fun onEnable() {
         loadChannels()
