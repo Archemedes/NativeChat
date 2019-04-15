@@ -15,20 +15,29 @@ import net.md_5.bungee.api.ChatColor.*
 class ChatListener(val plugin: Morphian) : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    fun chat(e: AsyncPlayerChatEvent){
-        //Note that we are async
+    fun chat(e: AsyncPlayerChatEvent) {
         var channel = e.player.chat.channel
+        var msg = e.message
 
-        if(e.message.startsWith("#")){
-            val alias = e.message.substring(1, e.message.indexOf(' '))
+        if(msg.startsWith("#")){
+            val firstSpace = msg.indexOf(' ')
+            val alias = msg.substring(1, firstSpace)
+
+            msg = msg.substring(firstSpace)
+
             val otherChannel = plugin.chatManager.channelAliases.keys.firstOrNull { it == alias }
 
             if(otherChannel == null){
                 e.player.sendMessage("${DARK_RED}ERROR:$RED Could not find channel with name$WHITE $alias")
+                e.isCancelled = true
                 return
             } else {
                 channel = plugin.chatManager.channelAliases.getValue(otherChannel)
             }
+        }
+
+        if(msg.startsWith("((")){
+            //TODO: LOOC channel
         }
 
         val message = Message(BukkitSender(e.player), channel)

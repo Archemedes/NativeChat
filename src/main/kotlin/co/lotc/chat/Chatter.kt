@@ -9,8 +9,8 @@ val Player.chat: Chatter
     get() = Morphian.chatManager.getChatSettings(this)
 
 class Chatter(player: Player) {
+    private val lock = ReentrantReadWriteLock()
     val uuid = player.uniqueId
-    val lock = ReentrantReadWriteLock()
 
     var channel = Morphian.chatManager.primordial
         get() = lock.read { return field }

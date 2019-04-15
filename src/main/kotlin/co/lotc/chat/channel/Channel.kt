@@ -19,6 +19,4 @@ interface Channel {
     fun chat(sender: Sender, input: String)
 
     fun getReceivers(sender: Sender) : List<Sender>
-
-
 }
