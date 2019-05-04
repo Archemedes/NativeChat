@@ -1,35 +1,37 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import sun.tools.jar.resources.jar
 
 plugins {
-    kotlin("jvm") version "1.3.11"
+    kotlin("jvm") version "1.3.31"
 }
 
-group = "co.lotc"
-version = "0.1"
+group = "me.lotc"
+version = "0.2"
 
 repositories {
-    maven{
+    /*maven{
         url = uri("https://repo.lordofthecraft.net/artifactory/lotc-releases/")
         credentials{
             username = "${properties["mavenUser"]}"
             password = "${properties["mavenPassword"]}"
         }
-    }
+    }*/
 
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    compileOnly("co.lotc:tythan-bukkit:0.3")
-    compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    compileOnly("co.lotc:tythan-bukkit:0.6")
+    compileOnly("me.lucko.luckperms:luckperms-api:4.4")
+    compileOnly("com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT")
     compile(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.freeCompilerArgs = listOf("-Xjvm-default=enable")
 }
 
 tasks.withType<Jar> {

@@ -1,0 +1,77 @@
+global:
+  WS:
+    title: 'Wandering Soul'
+    color: 'LIGHT_PURPLE'
+  OOC:
+    title: 'Global Out Of Character'
+    color: 'GRAY'
+    bracketcolor: 'DARK_GRAY'
+  debate:
+    title: 'Debate Channel'
+    tag: 'Debate'
+  Team:
+    title: "Staff Channel"
+    color: 'DARK_PURPLE'
+    staff: true
+    bold: true
+  ST:
+    title: 'Story Team'
+    color: 'DARK_GREEN'
+    staff: true
+    bold: true
+  Dev:
+    title: 'Development Team'
+    color: 'GOLD'
+    staff: true
+    bold: true
+  Mod:
+    title: 'Moderation Team'
+    color: 'DARK_AQUA'
+    staff: true
+    bold: true
+  C:
+    title: 'Community Team'
+    color: 'LIGHT_PURPLE'
+    staff: true
+    bold: true
+  A:
+    title: 'Admin Channel'
+    color: 'DARK_RED'
+    staff: true
+    bold: true
+
+local:
+  rp:
+    title: 'Roleplay'
+    color: 'DARK_GREEN'
+    tag: ''
+    radius: 20
+    looc:
+      tag: 'LOOC'
+      cooldown: 5
+  W:
+    title: 'Whisper'
+    color: 'BLUE'
+    radius: 3
+    looc:
+      tag: 'w-OOC'
+      cooldown: 5
+  Q:
+    title: 'Undertone'
+    color: 'AQUA'
+    radius: 8
+    looc:
+      tag: 'Q-OOC'
+      cooldown: 5
+  S:
+    title: 'Shout'
+    color: 'RED'
+    radius: 48
+    looc:
+      tag: 'S-OOC'
+      cooldown: 15
+
+broadcast:
+  Broadcast:
+    cmd: 'bc'
+    color: 'YELLOW'

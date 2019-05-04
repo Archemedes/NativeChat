@@ -1,4 +1,13 @@
 name: Morphian
+main: co.lotc.chat.Morphian
 version: 0.1
-depend: Tythan
+api-version: 1.13
+depend: [Tythan, LuckPerms]
+softdepend: [ArcheCore]
 description: LotC's \#1 draw!
+author: Awe
+
+commands:
+  chat:
+    description: Command for all chat and channel interaction
+    permission: chat.command
