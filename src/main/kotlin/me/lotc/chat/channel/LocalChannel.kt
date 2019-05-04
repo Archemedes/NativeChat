@@ -33,8 +33,7 @@ open class LocalChannel(
         AddChannel(this),
         EmoteFormatter(),
         MarkdownFormatter(),
-        Punctuation(),
-        LinkFormatter()
+        Punctuation()
     )
 
     override val outgoingFormatters = listOf(AddTimestamps(), Muffler(quiet, this.permissionMod))
