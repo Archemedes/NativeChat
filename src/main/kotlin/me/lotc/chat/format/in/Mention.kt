@@ -1,18 +1,21 @@
 package me.lotc.chat.format.`in`
 
+import me.lotc.chat.Morphian
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.depend.ArcheBridge
 import me.lotc.chat.message.Message
 import me.lotc.chat.message.Text
 import me.lotc.chat.user.chat
 import net.md_5.bungee.api.ChatColor
+import net.md_5.bungee.api.ChatColor.*
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 
+
 class Mention(val channel: Channel) : InFormatter {
     override fun format(message: Message) {
-        message.transform("(\\s|^)@[\\w\\d_]{3,16}\\b"){ asMention(message, it)}
+        message.transform("(\\s|^)@[\\w\\d_]{2,16}\\b"){ asMention(message, it)}
     }
 
     private fun asMention(msg: Message, rawName: Text) : Text {
@@ -22,7 +25,21 @@ class Mention(val channel: Channel) : InFormatter {
 
         val pinged: Player?
 
-        if(ArcheBridge.isEnabled){
+        val pingedChannel = Morphian.get().chatManager.getByAlias(theName.toLowerCase())
+        if(pingedChannel != null) {
+            val key = "team_mention"
+            if(msg.context.has(key)){
+                val mentioned : HashSet<Channel> =  msg.context[key]
+                mentioned.add(pingedChannel)
+            } else {
+                msg.context[key] = hashSetOf(pingedChannel)
+            }
+
+            val asPing = c.substring(0, apenstaartje) + pingedChannel.formattedTitle
+            val newName = Text(asPing, color=pingedChannel.color)
+            newName.tooltip("${GRAY}Can be pinged with ${pingedChannel.color}@${pingedChannel.cmd}")
+            return newName
+        } else if(ArcheBridge.isEnabled){
             //TODO
         } else {
             pinged = Bukkit.getPlayerExact(theName)

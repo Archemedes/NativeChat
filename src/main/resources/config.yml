@@ -8,11 +8,12 @@ global:
     bracketcolor: 'GOLD'
   debate:
     title: 'Debate Channel'
-  Team:
+  Staff:
     title: "Staff Channel"
     color: 'DARK_PURPLE'
     staff: true
     bold: true
+    cmd: 's'
   ST:
     title: 'Story Team'
     color: 'DARK_GREEN'
@@ -31,6 +32,7 @@ global:
   C:
     title: 'Community Team'
     color: 'LIGHT_PURPLE'
+    cmd: 'ct'
     staff: true
     bold: true
   A:
