@@ -7,7 +7,6 @@ import me.lotc.chat.user.Chatter
 import me.lotc.chat.user.chat
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import net.md_5.bungee.api.ChatColor.*
@@ -32,8 +31,11 @@ class ChatManager {
     }
 
     private fun addChannel(c: Channel){
-        if(channelAliases.containsKey(c.cmd)) throw IllegalStateException("Duplicate channel command tag found: " + c.cmd)
-        channelAliases[c.cmd] = c
+        if(channelAliases.containsKey(c.cmd)){
+            Morphian.get().logger.severe("Duplicate channel command tag found: " + c.cmd)
+        } else {
+            channelAliases[c.cmd] = c
+        }
     }
 
     fun channelsFor(player: CommandSender) : Collection<Channel> {

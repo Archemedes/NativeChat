@@ -2,6 +2,7 @@ package me.lotc.chat.channel
 
 import me.lotc.chat.format.`in`.*
 import me.lotc.chat.format.out.AddTimestamps
+import me.lotc.chat.format.out.MentionConsume
 import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.ChatColor.*
 
@@ -25,6 +26,6 @@ class GlobalChannel(
         LinkFormatter(),
         Mention(this)
     )
-    override val outgoingFormatters = listOf(AddTimestamps())
 
+    override val outgoingFormatters = listOf(AddTimestamps(), MentionConsume())
 }
