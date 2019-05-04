@@ -1,8 +1,8 @@
 package me.lotc.chat
 
 import me.lotc.chat.channel.Channel
+import me.lotc.chat.channel.GlobalChannel
 import me.lotc.chat.channel.LocalChannel
-import me.lotc.chat.channel.PrimordialHelp
 import me.lotc.chat.user.Chatter
 import me.lotc.chat.user.chat
 import org.bukkit.command.CommandSender
@@ -10,9 +10,11 @@ import org.bukkit.entity.Player
 import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import net.md_5.bungee.api.ChatColor.*
 
 class ChatManager {
-    val primordial : Channel = PrimordialHelp()
+    val primordial : Channel = GlobalChannel("OOC", "Global Out Of Character", "ooc",
+        false, GRAY, DARK_GRAY, false, 3, false)
     val channels get() = channelAliases.values as Collection<Channel>
 
     private val channelAliases = ConcurrentHashMap<String, Channel>()

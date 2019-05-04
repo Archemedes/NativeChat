@@ -25,6 +25,7 @@ class ChatCommand : BaseCommand() {
     fun leave(p: Player, channel: Channel){
         val header = channel.formattedTitle
         validate(channel.isSubscribed(p), "You aren't currently in $header")
+        validate(!channel.isPermanent, "You cannot leave this channel")
 
         p.chat.channels.unsubscribe(channel)
         msg("You have left $header")

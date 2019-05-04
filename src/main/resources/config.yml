@@ -2,13 +2,12 @@ global:
   WS:
     title: 'Wandering Soul'
     color: 'LIGHT_PURPLE'
-  OOC:
-    title: 'Global Out Of Character'
-    color: 'GRAY'
-    bracketcolor: 'DARK_GRAY'
+  Help:
+    title: 'Help Channel'
+    color: 'YELLOW'
+    bracketcolor: 'GOLD'
   debate:
     title: 'Debate Channel'
-    tag: 'Debate'
   Team:
     title: "Staff Channel"
     color: 'DARK_PURPLE'
@@ -48,23 +47,22 @@ local:
     radius: 20
     looc:
       tag: 'LOOC'
-      cooldown: 5
+      cooldown: 6
   W:
     title: 'Whisper'
     color: 'BLUE'
     radius: 3
     looc:
       tag: 'w-OOC'
-      cooldown: 5
-  Q:
+      cooldown: 6
+  Quiet:
     title: 'Undertone'
     color: 'AQUA'
     radius: 8
     looc:
       tag: 'Q-OOC'
-      cooldown: 5
-  S:
-    title: 'Shout'
+      cooldown: 6
+  Shout:
     color: 'RED'
     radius: 48
     looc:

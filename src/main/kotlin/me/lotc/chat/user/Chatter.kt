@@ -49,7 +49,7 @@ class Chatter(player: Player) {
         user.clearMatching { n->n.isMeta && n.meta.key.startsWith("rp_") }
         lock.read {
             for(chan in channels.subscribedChannels)
-                metaNode(user, "rp_channel", chan.cmd)
+                if(!chan.isPermanent) metaNode(user, "rp_channel", chan.cmd)
 
             metaNode(user, "rp_focus", channel.cmd)
             metaNode(user, "rp_emotecolor", emoteColor.name)

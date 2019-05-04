@@ -5,7 +5,7 @@ import me.lotc.chat.format.out.AddTimestamps
 import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.ChatColor.*
 
-open class GlobalChannel(
+class GlobalChannel(
     override val tag: String,
     override val title: String,
     override val cmd: String,
