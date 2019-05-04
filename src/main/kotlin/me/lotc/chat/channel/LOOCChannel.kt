@@ -9,6 +9,7 @@ class LOOCChannel(parent : LocalChannel, tag: String, title: String, cmd: String
 
     override val incomingFormatters = listOf(
         AddName(false),
+        LuckoPrefixFormatter(),
         AddChannel(this),
         ColoredText(ChatColor.GRAY),
         LinkFormatter()

@@ -25,9 +25,9 @@ class LuckoPrefixFormatter : InFormatter {
         prefix?:return
         val colorful = ChatColor.translateAlternateColorCodes('&', prefix.value)
         if(colorful.isBlank()) return
-        message.content.addFirst(Text(" "))
+        message.prefixes.addFirst(Text(" "))
         TextComponent.fromLegacyText(colorful).reversed().forEach {
-            message.content.addFirst(Text(it))
+            message.prefixes.addFirst(Text(it))
         }
     }
 }
