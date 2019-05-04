@@ -32,5 +32,6 @@ class MentionConsume : OutFormatter {
         Run(Morphian.get()).sync { p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0f, 0.8f)}
         val wrapMe = Text(" [!]", bold=true, color=ChatColor.GOLD)
         message.suffixes.addLast(wrapMe)
+        message.context["mention:${p.uniqueId}"] = true
     }
 }

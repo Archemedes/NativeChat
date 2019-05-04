@@ -32,7 +32,7 @@ class Chatter(player: Player) {
     val subscribedChannels get() = channels.subscribedChannels as List<Channel>
 
     val continuity = StringBuilder()
-    val focus = Focus()
+    val focus = Focus(this)
 
     var emoteColor by Lockable(lock, ChatColor.YELLOW)
     var wantsTimestamps by Lockable(lock, false)

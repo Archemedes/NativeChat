@@ -57,6 +57,7 @@ interface Channel {
         for(chatter in getReceivers(message)) {
             val composed = ComposedMessage(message.sender, pair.first, pair.second, BukkitSender(chatter.player), message.context)
             outgoingFormatters.forEach { it.format(composed) }
+            message.sender.chat?.focus?.acceptChat(this, composed)
             composed.send()
         }
     }

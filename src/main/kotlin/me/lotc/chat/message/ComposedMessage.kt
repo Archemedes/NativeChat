@@ -5,6 +5,7 @@ import co.lotc.core.util.Context
 import me.lotc.chat.user.player
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.BaseComponent
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -26,6 +27,13 @@ class ComposedMessage(val sender: Sender,
         @Suppress("DEPRECATION")
         if(player != null) player.sendMessage(ChatMessageType.CHAT, *arrayPre, *preamble, *content, *arraySuf)
         else receiver.sendMessage(*arrayPre, *preamble, *content, *arraySuf)
+    }
+
+    fun toSingleComponent() : BaseComponent {
+        val arrayPre = prefixes.map { it.toComponent() }.toTypedArray()
+        val arraySuf = suffixes.map { it.toComponent() }.toTypedArray()
+
+        return TextComponent(*arrayPre, *preamble, *content, *arraySuf)
     }
 
     fun getLegacyContent(): String {
