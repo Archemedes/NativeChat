@@ -4,17 +4,14 @@ import co.lotc.core.agnostic.Sender
 import co.lotc.core.util.Context
 import me.lotc.chat.user.player
 import net.md_5.bungee.api.chat.BaseComponent
-import org.bukkit.entity.Player
 import java.util.*
 
-class ComposedMessage(val sender: Sender,
-                      var preamble: Array<out BaseComponent>,
+class ComposedMessage(var preamble: Array<out BaseComponent>,
                       var content: Array<out BaseComponent>,
                       val receiver: Sender,
                       val context: Context) {
     val prefixes = LinkedList<Text>()
     val suffixes = LinkedList<Text>()
-    val player get() = sender as? Player
 
     val finalMessage by lazy {
         val arrayPre = prefixes.map { it.toComponent() }.toTypedArray()

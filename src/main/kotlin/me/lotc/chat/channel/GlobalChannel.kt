@@ -15,14 +15,15 @@ class GlobalChannel(
     override val bracketColor: ChatColor,
     override val isPermanent : Boolean,
     override val cooldown: Int,
-    val isStaff: Boolean) : Channel {
+    val isStaff: Boolean,
+    override val isBungee: Boolean) : Channel {
 
     override val sendFromMain = false
     override val incomingFormatters = listOf(
         AddName(false),
         LuckoPrefixFormatter(),
         AddChannel(this),
-        ColoredText(GRAY),
+        ColoredText( if(isStaff) WHITE else GRAY),
         LinkFormatter(),
         Mention(this)
     )

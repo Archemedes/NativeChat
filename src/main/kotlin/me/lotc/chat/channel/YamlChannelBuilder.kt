@@ -28,8 +28,9 @@ class YamlChannelBuilder(tagCandidate: String, private val c: ConfigurationSecti
 
     fun asGlobalChannel() : GlobalChannel {
         val isPermanent = c.getBoolean("permanent", false)
-        val isStaff = c.getBoolean("staff", false)
         val bold = c.getBoolean("bold", false)
+        val isStaff = c.getBoolean("staff", false)
+        val isBungee = c.getBoolean("bungee", true)
         return GlobalChannel(
             tag,
             title,
@@ -39,7 +40,8 @@ class YamlChannelBuilder(tagCandidate: String, private val c: ConfigurationSecti
             bracketColor,
             isPermanent,
             cooldown,
-            isStaff
+            isStaff,
+            isBungee
         )
     }
 

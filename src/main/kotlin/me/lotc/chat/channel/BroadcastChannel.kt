@@ -17,6 +17,7 @@ class BroadcastChannel(override val tag: String,
     override val isPermanent = true
     override val cooldown = 0
     override val sendFromMain = false
+    override val isBungee = true
 
     override val incomingFormatters = listOf(
         AddChannel(this),

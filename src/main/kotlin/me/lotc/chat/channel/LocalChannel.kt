@@ -20,6 +20,7 @@ open class LocalChannel(
     loocBuilder : YamlChannelBuilder? = null) : Channel {
 
     override val isPermanent = true //Local (RP) channels generally can't be left
+    override val isBungee = false
     override val sendFromMain = true //Need main thread for location finding and muffling
     override val bold = false
 
@@ -38,8 +39,8 @@ open class LocalChannel(
 
     override val outgoingFormatters = listOf(AddTimestamps(), Muffler(quiet, this.permissionMod))
 
-    override fun getReceivers(message: Message) : List<Chatter> {
-        val sendingPlayer = message.player
+    override fun getReceivers(message: Message?) : List<Chatter> {
+        val sendingPlayer = message?.player
         sendingPlayer ?: throw IllegalStateException("Non-player tried to send message in Local Channel!")
 
         val receivers = super.getReceivers(message).filter { LocationUtil.isClose(sendingPlayer, it.player, radius.toDouble() ) }

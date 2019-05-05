@@ -13,7 +13,8 @@ import net.md_5.bungee.api.ChatColor.*
 
 class ChatManager {
     val primordial : Channel = GlobalChannel("OOC", "Global Out Of Character", "ooc",
-        false, GRAY, DARK_GRAY, false, 3, false)
+        false, GRAY, DARK_GRAY, false, 3, isStaff = false, isBungee = true
+    )
     val channels get() = channelAliases.values as Collection<Channel>
 
     private val channelAliases = ConcurrentHashMap<String, Channel>()
