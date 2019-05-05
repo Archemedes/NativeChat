@@ -30,6 +30,8 @@ class Morphian : JavaPlugin() {
         Commands.build(getCommand("chat"), Supplier { ChatCommand() })
 
         Bukkit.getPluginManager().registerEvents(ChatListener(this), this)
+        FocusListener.listen()
+
         Bukkit.getOnlinePlayers().forEach(chatManager::join)
     }
 

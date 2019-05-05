@@ -51,7 +51,7 @@ class ChatCommand : BaseCommand() {
         msg("Cleared continuity")
     }
 
-    @Cmd("Clear stored content from continuity buffer")
+    @Cmd("Focus on a specific set of channels")
     fun focus(p: Player, category: Focus.Category){
         val f = p.chat.focus
         val oldCat = f.focus
@@ -60,6 +60,10 @@ class ChatCommand : BaseCommand() {
 
         f.focus = category
         f.resend()
+
+        //Do not add the lower bar for the ALL category
+        if(category === Focus.Category.ALL) return
+
         val cb = ChatBuilder()
         Focus.Category.values().forEach {
             val selected = it === category
@@ -69,8 +73,8 @@ class ChatCommand : BaseCommand() {
             else cb.color(DARK_GRAY)
 
             cb.append(it.tag).color(it.color).bold(false)
-                .hover("${GRAY}Click to see ${it.color}${it.description}$GRAY channels")
-                .command("/chat focus ${it.tag}")
+                .hover("${GRAY}Click to see ${it.color}${it.description}$GRAY messages")
+                .command("/chat focus ${it.name}")
 
             cb.append("]").reset()
             if(selected) cb.color(YELLOW).bold()
@@ -78,6 +82,7 @@ class ChatCommand : BaseCommand() {
             cb.append(" ")
         }
 
+        @Suppress("DEPRECATION")
         p.sendMessage(ChatMessageType.CHAT, cb.build())
     }
 

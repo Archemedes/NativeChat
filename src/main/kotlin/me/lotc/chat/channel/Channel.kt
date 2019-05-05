@@ -9,7 +9,9 @@ import me.lotc.chat.format.out.OutFormatter
 import me.lotc.chat.message.ComposedMessage
 import me.lotc.chat.message.Message
 import me.lotc.chat.user.Chatter
+import me.lotc.chat.user.player
 import net.md_5.bungee.api.ChatColor
+import net.md_5.bungee.api.ChatColor.*
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -60,7 +62,14 @@ interface Channel {
             message.sender.chat?.focus?.acceptChat(this, composed)
 
             val sendMe = message.sender.chat?.focus?.willAcceptChat(this, composed) ?: true
-            if(sendMe) composed.send()
+
+            val whoSays = message.sender.player
+            when {
+                whoSays == null -> composed.send()
+                whoSays.chat.focus.willAcceptChat(this, composed) -> composed.send()
+                else -> whoSays.sendActionBar("${GRAY}Missed message in $formattedTitle")
+            }
+
         }
     }
 

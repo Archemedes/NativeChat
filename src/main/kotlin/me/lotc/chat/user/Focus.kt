@@ -20,7 +20,7 @@ typealias Chat = Array<BaseComponent>
 typealias History = LinkedList<Chat>
 const val MAX_HISTORY = 50
 
-class Focus(val uuid : UUID) {
+class Focus(private val uuid : UUID) {
     private val categories = EnumMap<Category, History>(Category::class.java)
     private val lock = ReentrantReadWriteLock()
 
@@ -31,9 +31,10 @@ class Focus(val uuid : UUID) {
         //categories.remove(ALL) //I think we also need an "all" history
     }
 
+    @Suppress("DEPRECATION")
     fun resend(){
         val p = Bukkit.getPlayer(uuid)!!
-        repeat(10) { p.sendMessage(ChatMessageType.CHAT, TextComponent("")) }
+        repeat(20) { p.sendMessage(ChatMessageType.CHAT, TextComponent("")) }
 
         categories[focus]!!.forEach { p.sendMessage(ChatMessageType.CHAT, *it) }
     }
@@ -46,7 +47,7 @@ class Focus(val uuid : UUID) {
 
     internal fun acceptSystem(msg: Chat){
         categories.keys
-            .filter { willAcceptSystem(it, msg) }
+            .filter { willAcceptSystem(it) }
             .forEach { accept(it,msg)}
     }
 
@@ -58,7 +59,7 @@ class Focus(val uuid : UUID) {
         if(channel is BroadcastChannel) return true //Always show broadcasts
 
         return when (cat) {
-            PM, SYSTEM -> false
+            SYSTEM -> false
             MENTION -> msg.context.has("mention:$uuid")
             STAFF -> (channel as? GlobalChannel)?.isStaff ?: false
             RP -> channel is LocalChannel && channel !is LOOCChannel
@@ -68,21 +69,16 @@ class Focus(val uuid : UUID) {
         }
     }
 
-    fun willAcceptSystem(msg: Chat) : Boolean {
-        return willAcceptSystem(focus, msg)
+    fun willAcceptSystem() : Boolean {
+        return willAcceptSystem(focus)
     }
 
-    private fun willAcceptSystem(cat: Category, msg: Chat) : Boolean {
+    private fun willAcceptSystem(cat: Category) : Boolean {
         return when (cat) {
             STAFF, RP, LOCAL, GLOBAL,CHAT -> false
             MENTION -> false //I think?
-            PM -> msg.joinToString { it.toPlainText() }.matches(Regex("^\\[[A-Za-z0-9_]{3,16}->[A-Za-z0-9_]\\] .*") )
             ALL,SYSTEM -> true
         }
-    }
-
-    private fun toRaw(msg: Chat){
-        msg.joinToString { it.toPlainText() }
     }
 
     fun accept(cat: Category, msg: Chat){
@@ -104,7 +100,6 @@ class Focus(val uuid : UUID) {
         RP("RP",DARK_GREEN, "Roleplay"),
         LOCAL("Local", BLUE),
         GLOBAL("Global", RED),
-        PM("PM", AQUA, "Private Message"),
         CHAT("Chat", GREEN),
         SYSTEM("System", LIGHT_PURPLE),
     }
