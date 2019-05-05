@@ -13,7 +13,6 @@ import me.lotc.chat.format.out.OutFormatter
 import me.lotc.chat.message.ComposedMessage
 import me.lotc.chat.message.Message
 import me.lotc.chat.user.Chatter
-import me.lotc.chat.user.player
 import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.ChatColor.*
 import net.md_5.bungee.api.chat.BaseComponent
@@ -21,7 +20,6 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import com.google.common.io.ByteStreams
-import com.google.common.io.ByteArrayDataOutput
 import net.md_5.bungee.chat.ComponentSerializer
 
 
@@ -67,15 +65,15 @@ interface Channel {
     fun send(message: Message) {
         val pair = message.build()
         sendToNetwork(pair.first, pair.second)
-        sendComposed(pair.first, pair.second, getReceivers(message), message.context)
+        sendComposed(pair.first, pair.second, message.sender, getReceivers(message), message.context)
     }
 
     fun sendComposed(preamble: Array<BaseComponent>, content: Array<BaseComponent>,
-                     receivers: List<Chatter> = getReceivers(null),
+                     sender: Sender, receivers: List<Chatter> = getReceivers(null),
                      context: Context = Context()){
 
         for(chatter in receivers) {
-            val composed = ComposedMessage(preamble, content, BukkitSender(chatter.player), context)
+            val composed = ComposedMessage(sender, preamble, content, BukkitSender(chatter.player), context)
             outgoingFormatters.forEach { it.format(composed) }
 
             chatter.focus.acceptChat(this, composed)
@@ -94,7 +92,7 @@ interface Channel {
         out.writeUTF("ALL")
         out.writeUTF(BungeeListener.SUBCHANNEL_NAME)
         out.writeUTF(cmd)
-        out.writeInt(BungeeListener.Intent.SEND_MESSAGE.intent)
+        out.writeInt(BungeeListener.Intent.SEND_MESSAGE.encoded)
 
         out.writeUTF(ComponentSerializer.toString(*preamble))
         out.writeUTF(ComponentSerializer.toString(*content))

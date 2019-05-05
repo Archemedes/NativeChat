@@ -6,7 +6,8 @@ import me.lotc.chat.user.player
 import net.md_5.bungee.api.chat.BaseComponent
 import java.util.*
 
-class ComposedMessage(var preamble: Array<out BaseComponent>,
+class ComposedMessage(var sender: Sender,
+                      var preamble: Array<out BaseComponent>,
                       var content: Array<out BaseComponent>,
                       val receiver: Sender,
                       val context: Context) {

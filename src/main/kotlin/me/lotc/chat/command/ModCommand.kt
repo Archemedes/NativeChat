@@ -1,5 +1,6 @@
 package me.lotc.chat.command
 
+import co.lotc.core.agnostic.Sender
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.user.chat
 import co.lotc.core.command.annotate.Cmd
@@ -13,7 +14,7 @@ import java.time.Duration
 class ModCommand : BaseCommand() {
 
     @Cmd("Kick a player from a channel")
-    fun kick(us: CommandSender, channel: Channel, p: Player){
+    fun kick(us: Sender, channel: Channel, p: Player){
         pexOrBust(us, channel)
 
         validate(!channel.isPermanent, "Cannot kick people from permanent channels")
@@ -25,7 +26,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("Mute a player in channel")
-    fun mute(us: CommandSender, channel: Channel, p: Player, @Default("0s") duration: Duration){
+    fun mute(us: Sender, channel: Channel, p: Player, @Default("0s") duration: Duration){
         pexOrBust(us, channel)
 
         validate(p.hasPermission(channel.permissionTalk), "Player already cannot talk in ${channel.formattedTitle}")
@@ -40,7 +41,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("Unmute a player in channel")
-    fun unmute(us: CommandSender, channel: Channel, p: Player){
+    fun unmute(us: Sender, channel: Channel, p: Player){
         pexOrBust(us, channel)
 
         validate(p.chat.channels.isMuted(channel), "Player isn't muted in ${channel.formattedTitle}")
@@ -51,7 +52,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("Ban a player from channel")
-    fun ban(us: CommandSender, channel: Channel, p: Player, @Default("0s") duration: Duration){
+    fun ban(us: Sender, channel: Channel, p: Player, @Default("0s") duration: Duration){
         pexOrBust(us, channel)
 
         validate(p.hasPermission(channel.permission), "Player already doesn't have permission for ${channel.formattedTitle}")
@@ -67,7 +68,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("Unban a player in channel")
-    fun unban(us: CommandSender, channel: Channel, p: Player){
+    fun unban(us: Sender, channel: Channel, p: Player){
         pexOrBust(us, channel)
 
         validate(p.chat.channels.isBanned(channel), "Player isn't banned from ${channel.formattedTitle}")
@@ -78,7 +79,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("Add player to a channel")
-    fun add(us: CommandSender, channel: Channel, p: Player){
+    fun add(us: Sender, channel: Channel, p: Player){
         pexOrBust(us, channel)
 
         validate(!channel.isPermanent, "Cannot add people to permanent channels")
@@ -90,7 +91,7 @@ class ModCommand : BaseCommand() {
     }
 
     @Cmd("See if channel contains a certain player")
-    fun has(us: CommandSender, channel: Channel, p: Player){
+    fun has(us: Sender, channel: Channel, p: Player){
         pexOrBust(us, channel)
 
         if(p.chat.channels.isSubscribed(channel))
@@ -100,7 +101,7 @@ class ModCommand : BaseCommand() {
     }
 
 
-    private fun pexOrBust(s: CommandSender, channel: Channel){
+    private fun pexOrBust(s: Sender, channel: Channel){
         validate(s.hasPermission(channel.permissionMod), "You do not have permission to moderate this channel")
     }
 }

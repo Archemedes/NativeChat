@@ -2,7 +2,6 @@ package me.lotc.chat.format.out
 
 import me.lotc.chat.message.ComposedMessage
 import me.lotc.chat.user.player
-import co.lotc.core.bukkit.util.ChatBuilder
 import net.md_5.bungee.api.ChatColor.*
 
 val CHAT_MUFFLED_REPLACEMENT = "$DARK_GRAY*muffled* "

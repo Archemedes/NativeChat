@@ -6,19 +6,26 @@ import co.lotc.core.agnostic.Sender
 import co.lotc.core.bukkit.wrapper.BukkitSender
 import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
+import me.lotc.chat.ProxiedSender
 import me.lucko.luckperms.LuckPerms
 import me.lucko.luckperms.api.User
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import java.util.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 import kotlin.reflect.KProperty
 
-val Sender.player: Player? get() = ((this as? BukkitSender)?.handle as? Player)
 val Player.chat: Chatter get() = Morphian.get().chatManager.getChatSettings(this)
+val Sender.player: Player? get() = ((this as? BukkitSender)?.handle as? Player)
 val Sender.chat: Chatter? get() = this.player?.chat
+val Sender.uuid: UUID? get() {
+    this.player?.let { return it.uniqueId }
+    (this as? ProxiedSender)?.let { return it.uniqueId }
+    return null
+}
 
 operator fun Multimap<*,*>.contains(key: Any) = this.containsKey(key)
 

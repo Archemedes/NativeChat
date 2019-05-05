@@ -11,6 +11,10 @@ object ArcheBridge {
         return false //TODO
     }
 
+    fun getUsername(uuid: UUID): String{
+        return "TODO"
+    }
+
     fun getUUID(username : String) : UUID{
         return UUID.randomUUID() //TODO use ArcheNameLog
     }
