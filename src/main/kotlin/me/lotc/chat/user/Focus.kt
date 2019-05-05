@@ -7,7 +7,10 @@ import me.lotc.chat.user.Focus.Category
 import me.lotc.chat.user.Focus.Category.*
 import net.md_5.bungee.api.ChatColor.*
 import net.md_5.bungee.api.ChatColor
+import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.BaseComponent
+import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.Bukkit
 import java.util.*
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
@@ -25,7 +28,14 @@ class Focus(val uuid : UUID) {
 
     init{
         Category.values().forEach { cat -> categories[cat] = LinkedList() }
-        categories.remove(ALL)
+        //categories.remove(ALL) //I think we also need an "all" history
+    }
+
+    fun resend(){
+        val p = Bukkit.getPlayer(uuid)!!
+        repeat(10) { p.sendMessage(ChatMessageType.CHAT, TextComponent("")) }
+
+        categories[focus]!!.forEach { p.sendMessage(ChatMessageType.CHAT, *it) }
     }
 
     internal fun acceptChat(channel: Channel, msg: ComposedMessage){

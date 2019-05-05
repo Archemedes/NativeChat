@@ -24,7 +24,9 @@ class FocusListener {
 
                     val msg = ComponentSerializer.parse(chat.json)
                     focus.acceptSystem(msg)
-                    if(!focus.willAcceptSystem(msg)) event.isCancelled = true
+
+                    if(!msg[0].toPlainText().startsWith("Error:") && !focus.willAcceptSystem(msg))
+                        event.isCancelled = true
                 }
             }
         })

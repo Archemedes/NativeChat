@@ -1,13 +1,16 @@
 package me.lotc.chat.command
 
+import co.lotc.core.bukkit.util.ChatBuilder
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.user.chat
 import co.lotc.core.command.CommandTemplate
 import co.lotc.core.command.annotate.Cmd
 import me.lotc.chat.Morphian
+import me.lotc.chat.user.Focus
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import net.md_5.bungee.api.ChatColor.*
+import net.md_5.bungee.api.ChatMessageType
 
 class ChatCommand : BaseCommand() {
 
@@ -47,6 +50,37 @@ class ChatCommand : BaseCommand() {
         p.chat.continuity.clear()
         msg("Cleared continuity")
     }
+
+    @Cmd("Clear stored content from continuity buffer")
+    fun focus(p: Player, category: Focus.Category){
+        val f = p.chat.focus
+        val oldCat = f.focus
+
+        validate(category != oldCat, "Already focused on ${category.color}${category.description}")
+
+        f.focus = category
+        f.resend()
+        val cb = ChatBuilder()
+        Focus.Category.values().forEach {
+            val selected = it === category
+
+            cb.append("[")
+            if(selected) cb.color(YELLOW).bold()
+            else cb.color(DARK_GRAY)
+
+            cb.append(it.tag).color(it.color).bold(false)
+                .hover("${GRAY}Click to see ${it.color}${it.description}$GRAY channels")
+                .command("/chat focus ${it.tag}")
+
+            cb.append("]").reset()
+            if(selected) cb.color(YELLOW).bold()
+            else cb.color(DARK_GRAY)
+            cb.append(" ")
+        }
+
+        p.sendMessage(ChatMessageType.CHAT, cb.build())
+    }
+
 
     @Cmd("moderate channels you are allowed to edit")
     fun mod() : CommandTemplate {
