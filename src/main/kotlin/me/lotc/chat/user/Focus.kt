@@ -21,45 +21,53 @@ class Focus(val uuid : UUID) {
     private val categories = EnumMap<Category, History>(Category::class.java)
     private val lock = ReentrantReadWriteLock()
 
-    var focus by Lockable(lock, NONE)
-    val isFocused = focus != NONE
+    var focus by Lockable(lock, ALL)
 
     init{
         Category.values().forEach { cat -> categories[cat] = LinkedList() }
-        categories.remove(NONE)
+        categories.remove(ALL)
     }
 
     internal fun acceptChat(channel: Channel, msg: ComposedMessage){
-        Category.values()
+        categories.keys
            .filter { willAcceptChat(it, channel, msg) }
            .forEach { accept(it,msg.finalMessage)}
     }
 
     internal fun acceptSystem(msg: Chat){
-        accept(SYSTEM, msg)
-        //TODO
+        categories.keys
+            .filter { willAcceptSystem(it, msg) }
+            .forEach { accept(it,msg)}
     }
 
-    internal fun willAcceptChat(cat: Category, channel: Channel, msg: ComposedMessage): Boolean{
-        if(cat != NONE && channel is BroadcastChannel) return true //Always show broadcasts
+    fun willAcceptChat(channel: Channel, msg: ComposedMessage) : Boolean {
+        return willAcceptChat(focus, channel, msg)
+    }
+
+    private fun willAcceptChat(cat: Category, channel: Channel, msg: ComposedMessage): Boolean{
+        if(channel is BroadcastChannel) return true //Always show broadcasts
 
         return when (cat) {
-            NONE, PM, SYSTEM -> false
+            PM, SYSTEM -> false
             MENTION -> msg.context.has("mention:$uuid")
             STAFF -> (channel as? GlobalChannel)?.isStaff ?: false
             RP -> channel is LocalChannel && channel !is LOOCChannel
             LOCAL -> channel is LocalChannel
             GLOBAL -> channel is GlobalChannel || channel is BroadcastChannel
-            CHAT -> true
+            ALL,CHAT -> true
         }
     }
 
-    internal fun willAcceptSystem(cat: Category, channel: Channel, msg: Chat) : Boolean {
+    fun willAcceptSystem(msg: Chat) : Boolean {
+        return willAcceptSystem(focus, msg)
+    }
+
+    private fun willAcceptSystem(cat: Category, msg: Chat) : Boolean {
         return when (cat) {
-            NONE, STAFF, RP, LOCAL, GLOBAL,CHAT -> false
+            STAFF, RP, LOCAL, GLOBAL,CHAT -> false
             MENTION -> false //I think?
             PM -> msg.joinToString { it.toPlainText() }.matches(Regex("^\\[[A-Za-z0-9_]{3,16}->[A-Za-z0-9_]\\] .*") )
-            SYSTEM -> true
+            ALL,SYSTEM -> true
         }
     }
 
@@ -80,7 +88,7 @@ class Focus(val uuid : UUID) {
     }
 
     enum class Category(val tag: String, val color: ChatColor , val description : String = tag){
-        NONE("All", WHITE),
+        ALL("All", WHITE),
         MENTION("@", GOLD,"Mentions"),
         STAFF("Staff", DARK_PURPLE),
         RP("RP",DARK_GREEN, "Roleplay"),
