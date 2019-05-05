@@ -6,9 +6,10 @@ import me.lotc.chat.user.chat
 import co.lotc.core.command.annotate.Cmd
 import co.lotc.core.command.annotate.Default
 import co.lotc.core.util.TimeUtil
-import org.bukkit.command.CommandSender
+import me.lotc.chat.BungeeListener
 import org.bukkit.entity.Player
 import net.md_5.bungee.api.ChatColor.*
+import org.bukkit.OfflinePlayer
 import java.time.Duration
 
 class ModCommand : BaseCommand() {
@@ -100,6 +101,13 @@ class ModCommand : BaseCommand() {
             msg("$GOLD ${p.name}$DARK_PURPLE IS NOT in ${channel.formattedTitle}")
     }
 
+    private fun pluginMessage(s: Sender, channel: Channel, intent: BungeeListener.Intent, p: OfflinePlayer, duration:Duration) {
+        val out = BungeeListener.newPluginMessageDataOutput(s, channel, intent)
+        out.writeUTF(p.name)
+        out.writeLong(duration.toMillis())
+
+        //TODO
+    }
 
     private fun pexOrBust(s: Sender, channel: Channel){
         validate(s.hasPermission(channel.permissionMod), "You do not have permission to moderate this channel")

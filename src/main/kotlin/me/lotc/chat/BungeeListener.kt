@@ -1,6 +1,7 @@
 package me.lotc.chat
 
 import co.lotc.core.agnostic.Sender
+import co.lotc.core.bukkit.wrapper.BukkitSender
 import com.google.common.io.ByteArrayDataOutput
 import com.google.common.io.ByteStreams
 import me.lotc.chat.BungeeListener.Intent.*
@@ -60,11 +61,14 @@ object BungeeListener : PluginMessageListener {
             val userName = input.readUTF()
             val uuid = UUID.fromString(input.readUTF())
 
-            if(uuid.leastSignificantBits == 0L && uuid.mostSignificantBits == 0L)
-                throw OperationNotSupportedException("TODO: un-uuidable senders")
+            val sender : Sender
+            if(uuid.leastSignificantBits == 0L && uuid.mostSignificantBits == 0L) {
+                sender = BukkitSender(Bukkit.getConsoleSender())
+            } else {
+                val user = LuckPerms.getApi().userManager.loadUser(uuid).get()
+                sender = ProxiedSender(userName, user)
+            }
 
-            val user = LuckPerms.getApi().userManager.loadUser(uuid).get()
-            val sender = ProxiedSender(userName, user)
             //Handle based on the type of action (Intent) meant to be taken
             handlePluginMessage(channel, intent, sender, input)
         }

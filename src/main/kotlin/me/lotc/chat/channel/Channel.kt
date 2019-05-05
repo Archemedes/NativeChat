@@ -20,6 +20,7 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import com.google.common.io.ByteStreams
+import me.lotc.chat.BungeeListener.Intent.*
 import net.md_5.bungee.chat.ComponentSerializer
 
 
@@ -64,7 +65,7 @@ interface Channel {
     @JvmDefault
     fun send(message: Message) {
         val pair = message.build()
-        sendToNetwork(pair.first, pair.second)
+        sendToNetwork(message.sender, pair.first, pair.second)
         sendComposed(pair.first, pair.second, message.sender, getReceivers(message), message.context)
     }
 
@@ -83,16 +84,11 @@ interface Channel {
     }
 
     @JvmDefault
-    private fun sendToNetwork(preamble: Array<BaseComponent>, content: Array<BaseComponent>){
+    private fun sendToNetwork(sender: Sender, preamble: Array<BaseComponent>, content: Array<BaseComponent>){
         if(!isBungee) return
         val randomPlayer = Iterables.getFirst(Bukkit.getOnlinePlayers(), null) ?: return
 
-        val out = ByteStreams.newDataOutput()
-        out.writeUTF("Forward")
-        out.writeUTF("ALL")
-        out.writeUTF(BungeeListener.SUBCHANNEL_NAME)
-        out.writeUTF(cmd)
-        out.writeInt(BungeeListener.Intent.SEND_MESSAGE.encoded)
+        val out = BungeeListener.newPluginMessageDataOutput(sender, this, SEND_MESSAGE)
 
         out.writeUTF(ComponentSerializer.toString(*preamble))
         out.writeUTF(ComponentSerializer.toString(*content))
