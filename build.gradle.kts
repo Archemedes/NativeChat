@@ -18,11 +18,14 @@ repositories {
 
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
+    maven { url = uri("http://repo.dmulloy2.net/nexus/repository/public/") }
     mavenCentral()
     mavenLocal()
 }
 
 dependencies {
+    compileOnly("net.lordofthecraft.arche:ArcheCore:3.5")
+    compileOnly("com.comphenix.protocol:ProtocolLib:4.4.0")
     compileOnly("co.lotc:tythan-bukkit:0.6")
     compileOnly("me.lucko.luckperms:luckperms-api:4.4")
     compileOnly("com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT")
