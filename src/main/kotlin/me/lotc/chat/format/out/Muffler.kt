@@ -1,5 +1,6 @@
 package me.lotc.chat.format.out
 
+import co.lotc.core.bukkit.util.ChatBuilder
 import me.lotc.chat.message.ComposedMessage
 import me.lotc.chat.user.player
 import net.md_5.bungee.api.ChatColor.*
