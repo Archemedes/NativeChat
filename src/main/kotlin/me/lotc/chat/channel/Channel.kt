@@ -86,14 +86,12 @@ interface Channel {
     @JvmDefault
     private fun sendToNetwork(sender: Sender, preamble: Array<BaseComponent>, content: Array<BaseComponent>){
         if(!isBungee) return
-        val randomPlayer = Iterables.getFirst(Bukkit.getOnlinePlayers(), null) ?: return
-
         val out = BungeeListener.newPluginMessageDataOutput(sender, this, SEND_MESSAGE)
 
-        out.writeUTF(ComponentSerializer.toString(*preamble))
-        out.writeUTF(ComponentSerializer.toString(*content))
+        out.payload.writeUTF(ComponentSerializer.toString(*preamble))
+        out.payload.writeUTF(ComponentSerializer.toString(*content))
 
-        randomPlayer.sendPluginMessage(Morphian.get(), "BungeeCord", out.toByteArray())
+        out.send()
     }
 
     @JvmDefault

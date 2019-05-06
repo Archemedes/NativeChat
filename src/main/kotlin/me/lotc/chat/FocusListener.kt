@@ -16,7 +16,8 @@ object FocusListener {
     fun listen(plugin: Morphian){
         manager().registerAsyncHandler(object : PacketAdapter(plugin, PacketType.Play.Server.CHAT){
             override fun onPacketSending(event: PacketEvent){
-                //if(event.isCancelled) return
+                if(event.isCancelled) return
+                if(!plugin.chatManager.hasFullyConnected(event.player)) return
 
                 val type = event.packet.chatTypes.read(0)
 

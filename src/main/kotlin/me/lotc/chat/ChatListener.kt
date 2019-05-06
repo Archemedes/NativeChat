@@ -116,7 +116,7 @@ class ChatListener(private val plugin: Morphian) : Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     fun login(e: PlayerJoinEvent){
         plugin.chatManager.join(e.player)
     }

@@ -14,7 +14,9 @@ import net.md_5.bungee.chat.ComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.plugin.messaging.PluginMessageListener
+import java.io.ByteArrayInputStream
 import java.io.DataInput
+import java.io.DataInputStream
 import java.lang.IllegalArgumentException
 import java.time.Duration
 import java.util.*
@@ -28,18 +30,17 @@ object BungeeListener : PluginMessageListener {
         plugin.server.messenger.registerIncomingPluginChannel(plugin, "BungeeCord", this)
     }
 
-    fun newPluginMessageDataOutput(sender: Sender, channel: Channel, intent: Intent) : ByteArrayDataOutput{
+    fun newPluginMessageDataOutput(sender: Sender, channel: Channel, intent: Intent) : OutgoingChatPacket{
 
-        val out = ByteStreams.newDataOutput()
-        out.writeUTF("Forward")
-        out.writeUTF("ALL")
-        out.writeUTF(SUBCHANNEL_NAME)
+        val result = OutgoingChatPacket()
+        val out = result.payload
+
         out.writeUTF(channel.cmd)
         out.writeInt(intent.encoded)
         out.writeUTF(sender.name)
         out.writeUTF(( sender.uuid ?: UUID(0L,0L)).toString() )
 
-        return out
+        return result
     }
 
     override fun onPluginMessageReceived(bungeeChannel: String, player: Player, message: ByteArray) {
@@ -51,26 +52,33 @@ object BungeeListener : PluginMessageListener {
         val subChannel = input.readUTF()
 
         if(subChannel == SUBCHANNEL_NAME) {
+            //Copy boilerplate straight from the Bungee tutorial
+            //Basically extracts the payload from a forwarding message via a stack of wrappings
+            val payloadSize = input.readShort()
+            val payload = ByteArray(payloadSize.toInt())
+            input.readFully(payload)
+            val msg = DataInputStream(ByteArrayInputStream(payload))
 
             //Get some values common to all plugin messages
-            val channelCmd = input.readUTF()
+            val channelCmd = msg.readUTF()
             val channel = Morphian.get().chatManager.getByAlias(channelCmd)
 
+            println("IS ON CHANNEL: $channelCmd")
+
             if(channel == null || !channel.isBungee) return
-            val intent = Intent.fromInt(input.readInt())
-            val userName = input.readUTF()
-            val uuid = UUID.fromString(input.readUTF())
+            val intent = Intent.fromInt(msg.readInt())
+            val userName = msg.readUTF()
+            val uuid = UUID.fromString(msg.readUTF())
 
-            val sender : Sender
             if(uuid.leastSignificantBits == 0L && uuid.mostSignificantBits == 0L) {
-                sender = BukkitSender(Bukkit.getConsoleSender())
+                val sender = BukkitSender(Bukkit.getConsoleSender())
+                handlePluginMessage(channel, intent, sender, msg)
             } else {
-                val user = LuckPerms.getApi().userManager.loadUser(uuid).get()
-                sender = ProxiedSender(userName, user)
+                LuckPerms.getApi().userManager.loadUser(uuid).thenAcceptAsync{
+                    val sender = ProxiedSender(userName, it)
+                    handlePluginMessage(channel, intent, sender, msg)
+                }
             }
-
-            //Handle based on the type of action (Intent) meant to be taken
-            handlePluginMessage(channel, intent, sender, input)
         }
     }
 

@@ -103,8 +103,8 @@ class ModCommand : BaseCommand() {
 
     private fun pluginMessage(s: Sender, channel: Channel, intent: BungeeListener.Intent, p: OfflinePlayer, duration:Duration) {
         val out = BungeeListener.newPluginMessageDataOutput(s, channel, intent)
-        out.writeUTF(p.name)
-        out.writeLong(duration.toMillis())
+        out.payload.writeUTF(p.name)
+        out.payload.writeLong(duration.toMillis())
 
         //TODO
     }

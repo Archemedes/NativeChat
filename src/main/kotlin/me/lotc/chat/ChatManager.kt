@@ -54,6 +54,13 @@ class ChatManager {
         players.remove(player.uniqueId)
     }
 
+    //In all circumstances a chatter exists for a player
+    //But if we havent had time to initialize yet, there won't be any
+    //This is for example in the FocusListener, when chat might be send before our PlayerJoinEvent is called
+    fun hasFullyConnected(player: Player) : Boolean {
+        return players.containsKey(player.uniqueId)
+    }
+
     fun getChatSettings(player : Player) : Chatter {
         return players[player.uniqueId]!!
     }
