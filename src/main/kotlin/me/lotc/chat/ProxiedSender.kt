@@ -26,7 +26,7 @@ class ProxiedSender(private val username: String, private val user: User) : Send
         out.writeUTF(BungeeListener.SUBCHANNEL_NAME)
         out.writeUTF(msg)
 
-        randomPlayer.sendPluginMessage(Morphian.get(), "BungeeCord", out.toByteArray())
+        randomPlayer.sendPluginMessage(NativeChat.get(), "BungeeCord", out.toByteArray())
     }
 
     override fun sendMessage(msg: BaseComponent?) {

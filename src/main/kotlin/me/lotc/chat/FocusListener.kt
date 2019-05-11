@@ -13,7 +13,7 @@ import net.md_5.bungee.chat.ComponentSerializer
 
 object FocusListener {
 
-    fun listen(plugin: Morphian){
+    fun listen(plugin: NativeChat){
         manager().registerAsyncHandler(object : PacketAdapter(plugin, PacketType.Play.Server.CHAT){
             override fun onPacketSending(event: PacketEvent){
                 if(event.isCancelled) return

@@ -28,7 +28,7 @@ class OutgoingChatPacket {
         val array = payloadBytes.toByteArray()
         out.writeShort(array.size)
         out.write(array)
-        p.sendPluginMessage(Morphian.get(), "BungeeCord", out.toByteArray())
+        p.sendPluginMessage(NativeChat.get(), "BungeeCord", out.toByteArray())
     }
 
 }

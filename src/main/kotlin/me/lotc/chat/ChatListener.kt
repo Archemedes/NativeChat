@@ -14,7 +14,7 @@ import net.md_5.bungee.api.ChatColor.*
 import co.lotc.core.util.MessageUtil.*
 import org.bukkit.entity.Player
 
-class ChatListener(private val plugin: Morphian) : Listener {
+class ChatListener(private val plugin: NativeChat) : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun onEvent(e: AsyncPlayerChatEvent) { //Event MIGHT be Async, but sync if called from plugins

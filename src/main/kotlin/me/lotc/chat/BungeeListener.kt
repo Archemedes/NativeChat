@@ -25,7 +25,7 @@ import javax.naming.OperationNotSupportedException
 object BungeeListener : PluginMessageListener {
     const val SUBCHANNEL_NAME = "NativeChat"
 
-    fun listen(plugin: Morphian){
+    fun listen(plugin: NativeChat){
         plugin.server.messenger.registerOutgoingPluginChannel(plugin, "BungeeCord")
         plugin.server.messenger.registerIncomingPluginChannel(plugin, "BungeeCord", this)
     }
@@ -61,7 +61,7 @@ object BungeeListener : PluginMessageListener {
 
             //Get some values common to all plugin messages
             val channelCmd = msg.readUTF()
-            val channel = Morphian.get().chatManager.getByAlias(channelCmd)
+            val channel = NativeChat.get().chatManager.getByAlias(channelCmd)
 
             println("IS ON CHANNEL: $channelCmd")
 

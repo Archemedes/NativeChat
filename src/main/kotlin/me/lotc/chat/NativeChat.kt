@@ -9,9 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.lang.Exception
 import java.util.function.Supplier
 
-class Morphian : JavaPlugin() {
+class NativeChat : JavaPlugin() {
     companion object {
-        var instance: Morphian? = null
+        var instance: NativeChat? = null
             private set
         fun get() = instance!!
     }

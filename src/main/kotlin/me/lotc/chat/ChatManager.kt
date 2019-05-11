@@ -33,7 +33,7 @@ class ChatManager {
 
     private fun addChannel(c: Channel){
         if(channelAliases.containsKey(c.cmd)){
-            Morphian.get().logger.severe("Duplicate channel command tag found: " + c.cmd)
+            NativeChat.get().logger.severe("Duplicate channel command tag found: " + c.cmd)
         } else {
             channelAliases[c.cmd] = c
         }

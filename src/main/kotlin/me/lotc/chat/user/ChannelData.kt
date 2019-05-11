@@ -1,6 +1,6 @@
 package me.lotc.chat.user
 
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import co.lotc.core.bukkit.util.Run
 import me.lucko.luckperms.LuckPerms
@@ -16,7 +16,7 @@ import kotlin.concurrent.write
 
 class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
     internal val subscribedChannels = ArrayList<Channel>()
-    var channel = Morphian.get().chatManager.primordial
+    var channel = NativeChat.get().chatManager.primordial
         internal set
 
     private val cooldowns = ConcurrentHashMap<String, Instant>()
@@ -31,7 +31,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
 
     fun unsubscribe(channel: Channel){
         lock.write {
-            if(this.channel === channel) this.channel = Morphian.get().chatManager.primordial
+            if(this.channel === channel) this.channel = NativeChat.get().chatManager.primordial
             subscribedChannels.remove(channel)
         }
     }
@@ -106,7 +106,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
         val ins = cooldowns[name]
         if(ins == null) {
             cooldowns[name] = Instant.now()
-            Run(Morphian.instance).delayed(channel.cooldown * 20L) { cooldowns.remove(channel.cmd) }
+            Run(NativeChat.instance).delayed(channel.cooldown * 20L) { cooldowns.remove(channel.cmd) }
         }
 
         return ins == null

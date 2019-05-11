@@ -5,7 +5,7 @@ import me.lotc.chat.channel.Channel
 import me.lotc.chat.user.chat
 import co.lotc.core.command.CommandTemplate
 import co.lotc.core.command.annotate.Cmd
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.user.Focus
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -36,7 +36,7 @@ class ChatCommand : BaseCommand() {
 
     @Cmd("Show all channels you can join")
     fun list(s: CommandSender){
-        val channels = Morphian.get().chatManager.channelsFor(s)
+        val channels = NativeChat.get().chatManager.channelsFor(s)
         val channelString = channels.joinToString(", ") { "${it.bracketColor}#${it.cmd}: ${it.formattedTitle}" }
 
         msg("$LIGHT_PURPLE${BOLD}These are the channels we have for you:")

@@ -7,7 +7,7 @@ import co.lotc.core.bukkit.wrapper.BukkitSender
 import co.lotc.core.util.Context
 import com.google.common.collect.Iterables
 import me.lotc.chat.BungeeListener
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.format.`in`.InFormatter
 import me.lotc.chat.format.out.OutFormatter
 import me.lotc.chat.message.ComposedMessage
@@ -97,12 +97,12 @@ interface Channel {
     @JvmDefault
     fun handle(message : Message){
         incomingFormatters.forEach { it.format(message) }
-        if(sendFromMain && !Bukkit.isPrimaryThread() ) Run(Morphian.get()).sync { send(message) }
+        if(sendFromMain && !Bukkit.isPrimaryThread() ) Run(NativeChat.get()).sync { send(message) }
         else send(message)
     }
 
     @JvmDefault
     fun getReceivers(message: Message?) : List<Chatter> {
-        return Morphian.get().chatManager.getPlayers().filter { it.channels.isSubscribed(this) }
+        return NativeChat.get().chatManager.getPlayers().filter { it.channels.isSubscribed(this) }
     }
 }

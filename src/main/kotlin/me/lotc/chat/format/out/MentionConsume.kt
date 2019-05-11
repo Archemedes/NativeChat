@@ -1,7 +1,7 @@
 package me.lotc.chat.format.out
 
 import co.lotc.core.bukkit.util.Run
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.message.ComposedMessage
 import me.lotc.chat.message.Text
@@ -29,7 +29,7 @@ class MentionConsume : OutFormatter {
     }
 
     private fun iWasMentioned(message: ComposedMessage, p: Player){
-        Run(Morphian.get()).sync { p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0f, 0.8f)}
+        Run(NativeChat.get()).sync { p.playSound(p.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0f, 0.8f)}
         val wrapMe = Text(" [!]", bold=true, color=ChatColor.GOLD)
         message.suffixes.addLast(wrapMe)
         message.context["mention:${p.uniqueId}"] = true

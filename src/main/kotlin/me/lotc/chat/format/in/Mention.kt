@@ -1,6 +1,6 @@
 package me.lotc.chat.format.`in`
 
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.depend.ArcheBridge
 import me.lotc.chat.message.Message
@@ -25,7 +25,7 @@ class Mention(val channel: Channel) : InFormatter {
 
         val pinged: Player?
 
-        val pingedChannel = Morphian.get().chatManager.getByAlias(theName.toLowerCase())
+        val pingedChannel = NativeChat.get().chatManager.getByAlias(theName.toLowerCase())
         if(pingedChannel != null) {
             val key = "team_mention"
             if(msg.context.has(key)){

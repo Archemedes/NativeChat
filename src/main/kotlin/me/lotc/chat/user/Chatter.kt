@@ -1,6 +1,6 @@
 package me.lotc.chat.user
 
-import me.lotc.chat.Morphian
+import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import co.lotc.core.agnostic.Sender
 import co.lotc.core.bukkit.wrapper.BukkitSender
@@ -17,8 +17,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 import kotlin.reflect.KProperty
+import kotlin.streams.toList
 
-val Player.chat: Chatter get() = Morphian.get().chatManager.getChatSettings(this)
+val Player.chat: Chatter get() = NativeChat.get().chatManager.getChatSettings(this)
 val Sender.player: Player? get() = ((this as? BukkitSender)?.handle as? Player)
 val Sender.chat: Chatter? get() = this.player?.chat
 val Sender.uuid: UUID? get() {
@@ -64,6 +65,7 @@ class Chatter(player: Player) {
 
             metaNode(user, "rp_timestamps", wantsTimestamps.toString())
             metaNode(user, "rp_punctuate", correctPunctuation.toString())
+            metaNode(user, "rp_mention", isMentionable.toString())
         }
         api.userManager.saveUser(user)
     }
@@ -74,7 +76,7 @@ class Chatter(player: Player) {
 
     fun loadSettings(){
         //Doesn't need a lock: Only called onJoin when object not yet exposed to other threads
-        val chatManager = Morphian.get().chatManager
+        val chatManager = NativeChat.get().chatManager
 
         val user = LuckPerms.getApi().getUser(uuid)
         user?: throw IllegalStateException("loading Chatter settings but no LuckPerms for $uuid")
@@ -82,7 +84,7 @@ class Chatter(player: Player) {
         val settings = MultimapBuilder.hashKeys().arrayListValues().build<String, String>()
 
         //Go through LuckPerms to find all the meta nodes that are RPEngine settings nodes
-        user.allNodes.stream().filter { it.isMeta }.filter{ it.value }.filter{it.isPermanent}.filter{ it.appliesGlobally() }
+         user.allNodes.stream().filter { it.isMeta }.filter{ it.value }.filter{it.isPermanent}.filter{ it.appliesGlobally() }
             .map { it.meta }.filter { it.key.startsWith("rp_") }.forEach { settings.put(it.key,it.value) }
 
         settings["rp_channel"].forEach{chatManager.getByAlias(it)?.run(channels.subscribedChannels::add) }
@@ -93,6 +95,8 @@ class Chatter(player: Player) {
             .forEach{ channels.subscribedChannels.add(it) }
 
         if("rp_focus" in settings) channels.channel = chatManager.getByAlias(settings["rp_focus"][0]) ?: channel
+        if(channel !in channels.subscribedChannels) channels.subscribedChannels.add(channel)
+
         if("rp_emotecolor" in settings) emoteColor = ChatColor.valueOf(settings["rp_emotecolor"][0])
         if("rp_emotestyle" in settings) emoteStyle = EmoteStyle.valueOf(settings["rp_emotestyle"][0])
 
