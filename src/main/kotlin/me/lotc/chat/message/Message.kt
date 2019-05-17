@@ -55,8 +55,9 @@ class Message(val sender: Sender, initialText: String) {
 
             for(i in 1 until unmatched.size){
                 matcher.find()
-                val sb = StringBuffer()
-                for(j in 0 until matcher.groupCount()) sb.append(matcher.group(j))
+                val sb = StringBuilder()
+                if(matcher.groupCount() > 0) for(j in 0 until matcher.groupCount()) sb.append(matcher.group(j))
+                else sb.append(matcher.group())
 
                 val matchedText = transformer.invoke( txt.copy(content = sb.toString()) )
                 newContent.add(matchedText)
