@@ -96,7 +96,13 @@ interface Channel {
 
     @JvmDefault
     fun handle(message : Message){
-        incomingFormatters.forEach { it.format(message) }
+        message.content.forEach(::print)
+            println()
+        incomingFormatters.forEach {
+            it.format(message)
+            message.content.forEach(::print)
+            println()
+        }
         if(sendFromMain && !Bukkit.isPrimaryThread() ) Run(NativeChat.get()).sync { send(message) }
         else send(message)
     }

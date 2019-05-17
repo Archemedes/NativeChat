@@ -52,16 +52,20 @@ class Punctuation : InFormatter {
         val c = message.chatter ?: return
         if(!c.correctPunctuation) return
 
+        message.content.first.map(::capitalizeFirst)
+
         for(txt in message.content){
-            val lc = txt.content.toLowerCase()
+            //val lc = txt.content.toLowerCase()
             for( (ugly,nice) in replaces){
-                val uglySpaced = " $ugly "
+                txt.map { m->m.replace(Regex("\\b$ugly\\b"),nice)}
+/*                val uglySpaced = " $ugly "
+
                 var index = lc.indexOf( uglySpaced )
                 while( index != -1 && index < lc.length){
                     val resumeAt = index + uglySpaced.length
                     txt.map { m-> m.substring(0, index) + " $nice " + m.substring(resumeAt) }
                     index = lc.indexOf(uglySpaced, resumeAt)
-                }
+                }*/
             }
             var nc = txt.content
             nc = capitalize(nc, '.')
@@ -72,15 +76,36 @@ class Punctuation : InFormatter {
     }
 
     private fun capitalize(content: String, dot: Char): String {
-        val find = "$dot "
-        var lc = content
-        var index = content.indexOf(find)
-        while(index != -1 && index+2<lc.length){
-            val capital = lc.elementAt(index+2)
-            if(capital.isLowerCase()) lc = lc.substring(0, index+2) + capital.toUpperCase() + lc.substring(index+3)
-            index = lc.indexOf(find, index+3)
+        val sb = StringBuilder()
+        var capitalize = false
+        for(x in content){
+            if(x==dot) {
+                capitalize = true
+                sb.append(x)
+            } else if(capitalize && x.isLetter()) {
+                sb.append(x.toUpperCase())
+                capitalize = false
+            } else {
+                sb.append(x)
+            }
         }
 
-        return lc
+        return sb.toString()
+    }
+
+    private fun capitalizeFirst(content:String) : String {
+        val sb = StringBuilder()
+        for(i in 0 until content.length){
+            val x = content[i]
+            if(x.isLetter()){
+                sb.append(x.toUpperCase())
+                if(i + 1 < content.length) sb.append(content.substring(i+1))
+                break
+            }  else {
+                sb.append(x)
+            }
+        }
+
+        return sb.toString()
     }
 }

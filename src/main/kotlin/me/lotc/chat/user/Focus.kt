@@ -1,5 +1,6 @@
 package me.lotc.chat.user
 
+import co.lotc.core.command.brigadier.TooltipProvider
 import jdk.nashorn.internal.objects.Global
 import me.lotc.chat.channel.*
 import me.lotc.chat.message.ComposedMessage
@@ -93,7 +94,7 @@ class Focus(private val uuid : UUID) {
         lock.read { return categories[cat]!! }
     }
 
-    enum class Category(val tag: String, val color: ChatColor , val description : String = tag){
+    enum class Category(val tag: String, val color: ChatColor , val description : String = tag) : TooltipProvider{
         ALL("All", WHITE),
         MENTION("@", GOLD,"Mentions"),
         STAFF("Staff", DARK_PURPLE),
@@ -101,6 +102,8 @@ class Focus(private val uuid : UUID) {
         LOCAL("Local", BLUE),
         GLOBAL("Global", RED),
         CHAT("Chat", GREEN),
-        SYSTEM("System", LIGHT_PURPLE),
+        SYSTEM("System", LIGHT_PURPLE);
+
+        override fun getTooltip()= color.toString() + description
     }
 }

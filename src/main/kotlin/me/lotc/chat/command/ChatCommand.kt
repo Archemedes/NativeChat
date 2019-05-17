@@ -5,6 +5,7 @@ import me.lotc.chat.channel.Channel
 import me.lotc.chat.user.chat
 import co.lotc.core.command.CommandTemplate
 import co.lotc.core.command.annotate.Cmd
+import co.lotc.core.command.annotate.Default
 import me.lotc.chat.NativeChat
 import me.lotc.chat.user.Focus
 import org.bukkit.command.CommandSender
@@ -52,7 +53,7 @@ class ChatCommand : BaseCommand() {
     }
 
     @Cmd("Focus on a specific set of channels")
-    fun focus(p: Player, category: Focus.Category){
+    fun focus(p: Player, @Default("local") category: Focus.Category){
         val f = p.chat.focus
         val oldCat = f.focus
 

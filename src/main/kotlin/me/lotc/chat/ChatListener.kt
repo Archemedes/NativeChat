@@ -70,10 +70,10 @@ class ChatListener(private val plugin: NativeChat) : Listener {
     private fun hasChannelBracket(d : ChatAttempt) = d.message.startsWith("#")
 
     private fun determineChannel(d : ChatAttempt){
-        val msg = d.message.substring(1).toLowerCase()
+        val msg = d.message.substring(1)
 
         val firstSpace = msg.indexOf(' ')
-        val alias = if(firstSpace > 0) msg.substring(0, firstSpace).trim() else msg
+        val alias = if(firstSpace > 0) msg.substring(0, firstSpace).trim().toLowerCase() else msg
 
         val channel = plugin.chatManager.getByAlias(alias)
 
