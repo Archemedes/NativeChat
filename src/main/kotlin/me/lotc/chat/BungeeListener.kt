@@ -46,8 +46,6 @@ object BungeeListener : PluginMessageListener {
     override fun onPluginMessageReceived(bungeeChannel: String, player: Player, message: ByteArray) {
         if (bungeeChannel != "BungeeCord") return
 
-        println("MESSAGE ON THREAD: " + Bukkit.isPrimaryThread())
-
         val input = ByteStreams.newDataInput(message)
         val subChannel = input.readUTF()
 
@@ -62,8 +60,6 @@ object BungeeListener : PluginMessageListener {
             //Get some values common to all plugin messages
             val channelCmd = msg.readUTF()
             val channel = NativeChat.get().chatManager.getByAlias(channelCmd)
-
-            println("IS ON CHANNEL: $channelCmd")
 
             if(channel == null || !channel.isBungee) return
             val intent = Intent.fromInt(msg.readInt())
