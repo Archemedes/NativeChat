@@ -4,6 +4,7 @@ import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import co.lotc.core.agnostic.Sender
 import co.lotc.core.bukkit.wrapper.BukkitSender
+import co.lotc.core.command.brigadier.TooltipProvider
 import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
 import me.lotc.chat.ProxiedSender
@@ -17,7 +18,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 import kotlin.reflect.KProperty
-import kotlin.streams.toList
 
 val Player.chat: Chatter get() = NativeChat.get().chatManager.getChatSettings(this)
 val Sender.player: Player? get() = ((this as? BukkitSender)?.handle as? Player)
@@ -106,10 +106,12 @@ class Chatter(player: Player) {
     }
 }
 
-enum class EmoteStyle {
-    ALWAYS,
-    QUOTATIONS,
-    EXPLICIT
+enum class EmoteStyle(private val tip: String) : TooltipProvider {
+    ALWAYS("All your roleplay chat will be emoted by default"),
+    QUOTATIONS("Roleplay chat will be send as an emote as long as you use a quotation mark (\")"),
+    EXPLICIT("You must explicitly declare your intent to emote by starting chat with an asterix (*)");
+
+    override fun getTooltip() = tip
 }
 
 class Lockable<T>(private val lock: ReentrantReadWriteLock, private var field : T)  {
