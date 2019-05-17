@@ -16,7 +16,10 @@ class AddName(private val displayName : Boolean) : InFormatter {
         val p = message.player
         if(displayName) name = p?.displayName ?: name
 
-        val color = if(p != null && NativeChat.get().useArcheCore() && ArcheBridge.isNew(p)) LIGHT_PURPLE else DARK_GRAY
+        val new = NativeChat.get().useArcheCore() && ArcheBridge.isNew(p)
+
+        val color = if(new) LIGHT_PURPLE else DARK_GRAY
+        val continuum = if(new) "\n$LIGHT_PURPLE${ITALIC}Player is new" else ""
         val format = Text(name, color = color)
 
         lateinit var hover : String
@@ -30,7 +33,7 @@ class AddName(private val displayName : Boolean) : InFormatter {
         }
 
         format.click = click
-        format.hover = MessageUtil.hoverEvent(hover)
+        format.hover = MessageUtil.hoverEvent(hover+continuum)
 
         message.prefixes.addLast(format)
         message.prefixes.addLast(Text(": ", color=DARK_GRAY))

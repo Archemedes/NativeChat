@@ -6,8 +6,9 @@ import java.util.*
 
 object ArcheBridge {
 
-    fun isNew(p: Player) : Boolean{
-       return ArcheCore.getPersona(p)?.isNewbie ?: false
+    fun isNew(p: Player?) : Boolean{
+        p?:return false
+        return ArcheCore.getPersona(p)?.isNewbie ?: false
     }
 
     fun getUsername(uuid: UUID): String? {

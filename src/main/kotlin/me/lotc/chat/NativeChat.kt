@@ -51,8 +51,8 @@ class NativeChat : JavaPlugin() {
         channels.addAll(buildChannels("global", YamlChannelBuilder::asGlobalChannel))
         channels.addAll(buildChannels("local", YamlChannelBuilder::asLocalChannel))
         channels.addAll(buildChannels("broadcast", YamlChannelBuilder::asBroadcastChannel))
-
-        chatManager.onEnable(channels)
+        
+        chatManager.onEnable( channels )
     }
 
     private fun buildChannels(sectionName: String, builder : (data: YamlChannelBuilder) -> Channel) : List<Channel> {

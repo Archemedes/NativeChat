@@ -24,7 +24,7 @@ class ChatManager {
         channelAliases[primordial.cmd] = primordial
     }
 
-    internal fun onEnable(channels: List<Channel>){
+    internal fun onEnable(channels: ArrayList<Channel>){
         for(c in channels){
             addChannel(c)
             (c as? LocalChannel)?.looc?.run(::addChannel)
