@@ -1,10 +1,8 @@
 package me.lotc.chat.user
 
 import co.lotc.core.command.brigadier.TooltipProvider
-import jdk.nashorn.internal.objects.Global
 import me.lotc.chat.channel.*
 import me.lotc.chat.message.ComposedMessage
-import me.lotc.chat.user.Focus.Category
 import me.lotc.chat.user.Focus.Category.*
 import net.md_5.bungee.api.ChatColor.*
 import net.md_5.bungee.api.ChatColor
