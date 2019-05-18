@@ -21,6 +21,8 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import com.google.common.io.ByteStreams
 import me.lotc.chat.BungeeListener.Intent.*
+import me.lotc.chat.depend.OmniBridge
+import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.chat.ComponentSerializer
 
 
@@ -63,8 +65,8 @@ interface Channel {
     }
 
     @JvmDefault
-    fun send(message: Message) {
-        val pair = message.build()
+    fun send(message: Message, builtMessage: Pair<Array<BaseComponent>,Array<BaseComponent>>) {
+        val pair = builtMessage
         sendToNetwork(message.sender, pair.first, pair.second)
         sendComposed(pair.first, pair.second, message.sender, getReceivers(message), message.context)
     }
@@ -96,15 +98,15 @@ interface Channel {
 
     @JvmDefault
     fun handle(message : Message){
-        message.content.forEach(::print)
-            println()
         incomingFormatters.forEach {
             it.format(message)
-            message.content.forEach(::print)
-            println()
         }
-        if(sendFromMain && !Bukkit.isPrimaryThread() ) Run(NativeChat.get()).sync { send(message) }
-        else send(message)
+
+        val pair = message.build()
+        if(OmniBridge.isEnabled) OmniBridge.log( TextComponent.toPlainText(*pair.first, *pair.second), message.sender, this)
+
+        if(sendFromMain && !Bukkit.isPrimaryThread() ) Run(NativeChat.get()).sync { send(message, pair) }
+        else send(message, pair)
     }
 
     @JvmDefault

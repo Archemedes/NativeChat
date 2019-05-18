@@ -39,7 +39,7 @@ class Mention(val channel: Channel) : InFormatter {
 
 
         val pinged = when{
-            NativeChat.get().useArcheCore()-> ArcheBridge.getUUID(theName)?.let { Bukkit.getPlayer(it) }
+            ArcheBridge.isEnabled -> ArcheBridge.getUUID(theName)?.let { Bukkit.getPlayer(it) }
             else -> Bukkit.getPlayerExact(theName)
 
         }

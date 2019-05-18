@@ -1,10 +1,12 @@
 package me.lotc.chat.depend
 
 import net.lordofthecraft.arche.ArcheCore
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
 object ArcheBridge {
+    val isEnabled = Bukkit.getPluginManager().isPluginEnabled("ArcheCore")
 
     fun isNew(p: Player?) : Boolean{
         p?:return false

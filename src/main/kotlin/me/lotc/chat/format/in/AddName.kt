@@ -16,7 +16,7 @@ class AddName(private val displayName : Boolean) : InFormatter {
         val p = message.player
         if(displayName) name = p?.displayName ?: name
 
-        val new = NativeChat.get().useArcheCore() && ArcheBridge.isNew(p)
+        val new = ArcheBridge.isEnabled && ArcheBridge.isNew(p)
 
         val color = if(new) LIGHT_PURPLE else DARK_GRAY
         val continuum = if(new) "\n$LIGHT_PURPLE${ITALIC}Player is new" else ""

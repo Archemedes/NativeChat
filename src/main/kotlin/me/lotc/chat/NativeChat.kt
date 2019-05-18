@@ -18,11 +18,6 @@ class NativeChat : JavaPlugin() {
 
     val chatManager = ChatManager()
 
-    fun useArcheCore() : Boolean {
-        return Bukkit.getPluginManager().isPluginEnabled("ArcheCore")
-    }
-
-
     override fun onLoad(){
         instance = this
     }
