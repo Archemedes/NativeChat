@@ -52,12 +52,11 @@ class Punctuation : InFormatter {
         val c = message.chatter ?: return
         if(!c.correctPunctuation) return
 
-        message.content.first.map(::capitalizeFirst)
 
         for(txt in message.content){
             //val lc = txt.content.toLowerCase()
             for( (ugly,nice) in replaces){
-                txt.map { m->m.replace(Regex("\\b$ugly\\b"),nice)}
+                txt.map { m->m.replace(Regex("\\b$ugly\\b,",RegexOption.IGNORE_CASE),nice)}
 /*                val uglySpaced = " $ugly "
 
                 var index = lc.indexOf( uglySpaced )
@@ -73,6 +72,8 @@ class Punctuation : InFormatter {
             nc = capitalize(nc, '!')
             txt.content = nc
         }
+
+        message.content.first.map(::capitalizeFirst)
     }
 
     private fun capitalize(content: String, dot: Char): String {

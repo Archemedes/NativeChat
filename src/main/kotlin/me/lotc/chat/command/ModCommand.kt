@@ -73,7 +73,7 @@ class ModCommand : BaseCommand() {
         pexOrBust(us, channel)
 
         validate(p.chat.channels.isBanned(channel), "Player isn't banned from ${channel.formattedTitle}")
-        p.chat.channels.unmute(channel)
+        p.chat.channels.unban(channel)
 
         us.sendMessage("${GRAY}We have unbanned$GOLD ${p.name}$GRAY from ${channel.formattedTitle}")
         p.sendMessage("${DARK_RED}You are no longer banned from ${channel.formattedTitle}")

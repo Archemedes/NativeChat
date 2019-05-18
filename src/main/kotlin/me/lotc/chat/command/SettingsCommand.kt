@@ -29,7 +29,7 @@ class SettingsCommand : BaseCommand() {
         msg("${GOLD}Set your emote style to:$WHITE $style")
     }
 
-    @Cmd(value="Set your emote color", permission = "chat.settings.emotecolor")
+    @Cmd(value="Set your emote color", permission = "chat.emotecolor")
     fun emotecolor(p: Player, color: ChatColor){
         val alloweds = setOf(RED, YELLOW, GOLD, AQUA, GREEN, DARK_GREEN, DARK_RED, DARK_AQUA, DARK_PURPLE, LIGHT_PURPLE)
         val col = color.name.toLowerCase().replace('_',' ').capitalize()

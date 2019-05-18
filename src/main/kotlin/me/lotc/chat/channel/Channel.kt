@@ -36,7 +36,7 @@ interface Channel {
     val incomingFormatters: List<InFormatter>
     val outgoingFormatters: List<OutFormatter>
 
-    val permission get() = "rp.channel.$cmd"
+    val permission get() = "chat.channel.$cmd"
     val permissionTalk get() = "$permission.talk"
     val permissionMod get() = "$permission.mod"
     val formattedTitle get() = "$color$title"

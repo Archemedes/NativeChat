@@ -58,12 +58,19 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
         saveOnUser(negatedNode(channel.permission), true)
     }
 
+    fun isGlobalMuted(channel: Channel) : Boolean {
+        return isNegated("chat.*.talk")
+    }
+
+    fun mute(duration: Duration? = null){
+        saveOnUser(negatedNode("chat.*.talk", duration))
+    }
+
     fun isMuted(channel: Channel) : Boolean {
         return isNegated(channel.permissionTalk)
     }
 
     fun mute(channel: Channel, duration: Duration? = null){
-        unsubscribe(channel)
         saveOnUser(negatedNode(channel.permissionTalk, duration))
     }
 

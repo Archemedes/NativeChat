@@ -11,3 +11,9 @@ commands:
   chat:
     description: Command for all chat and channel interaction
     permission: chat.command
+
+permissions:
+  chat.emotecolor:
+    description: Allows you to customize the color of your emotes
+  chat.markdown:
+    description: Lets you use inbuilt markdown formatting for bold and italic RP text

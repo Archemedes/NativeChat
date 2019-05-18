@@ -7,8 +7,10 @@ class MarkdownFormatter: InFormatter {
     //Uses Telaniresque markdown instead of actual markdown characters
 
     override fun format(message: Message) {
-        message.transform("\\^.+?\\^", ::setBold)
-        message.transform("/.+?/", ::setItalic)
+        if(message.sender.hasPermission("chat.markdown")) {
+            message.transform("\\^.+?\\^", ::setBold)
+            message.transform("/.+?/", ::setItalic)
+        }
     }
 
     private fun setBold(text : Text) : Text{
