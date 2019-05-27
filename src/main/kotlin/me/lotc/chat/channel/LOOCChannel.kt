@@ -16,5 +16,4 @@ class LOOCChannel(parent : LocalChannel, tag: String, title: String, cmd: String
     )
 
     override val outgoingFormatters = listOf(AddTimestamps())
-
 }

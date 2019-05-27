@@ -1,5 +1,6 @@
 package me.lotc.chat
 
+import me.lotc.chat.channel.BroadcastChannel
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.channel.GlobalChannel
 import me.lotc.chat.channel.LocalChannel
@@ -10,7 +11,10 @@ import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import net.md_5.bungee.api.ChatColor.*
+import org.bukkit.Bukkit
+import org.bukkit.permissions.Permission
 import org.bukkit.permissions.PermissionAttachment
+import org.bukkit.permissions.PermissionDefault
 
 class ChatManager {
     val primordial : Channel = GlobalChannel("OOC", "Global Out Of Character", "ooc",
@@ -26,6 +30,7 @@ class ChatManager {
     }
 
     internal fun onEnable(channels: ArrayList<Channel>){
+        setupPermissions(primordial)
         for(c in channels){
             addChannel(c)
             (c as? LocalChannel)?.looc?.run(::addChannel)
@@ -37,7 +42,19 @@ class ChatManager {
             NativeChat.get().logger.severe("Duplicate channel command tag found: " + c.cmd)
         } else {
             channelAliases[c.cmd] = c
+            setupPermissions(c)
         }
+    }
+
+    private fun setupPermissions(c: Channel){
+        val defaultPermission = when{
+            c is GlobalChannel && c.isStaff -> PermissionDefault.FALSE
+            else -> PermissionDefault.TRUE
+        }
+
+        val talkPermission = if(c !is BroadcastChannel) mapOf( c.permissionTalk to true ) else emptyMap()
+        val perm = Permission(c.permission, "May use the channel: ${c.title}", defaultPermission, talkPermission)
+        Bukkit.getPluginManager().addPermission(perm)
     }
 
     fun channelsFor(player: CommandSender) : Collection<Channel> {

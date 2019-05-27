@@ -3,6 +3,7 @@ global:
     title: 'Wandering Soul'
     color: 'LIGHT_PURPLE'
   Help:
+    cmd: 'h'
     title: 'Help Channel'
     color: 'YELLOW'
     bracketcolor: 'GOLD'
@@ -75,3 +76,14 @@ broadcast:
   Broadcast:
     cmd: 'bc'
     color: 'YELLOW'
+  EventBC:
+    cmd: 'ebc'
+    title: 'Event Broadcast'
+    tag: 'Event Broadcast'
+    color: 'DARK_GREEN'
+  StaffBC:
+    cmd: 'sbc'
+    tag: 'Staff Broadcast'
+    color: 'RED'
+    signname: true
+    textcolor: 'YELLOW'

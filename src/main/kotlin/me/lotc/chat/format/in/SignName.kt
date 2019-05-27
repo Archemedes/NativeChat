@@ -8,7 +8,7 @@ class SignName(private val active: Boolean) : InFormatter {
     override fun format(message: Message) {
         if(!active) return
 
-        val t = Text(" -${message.sender}", color=ChatColor.GRAY, italic = true)
+        val t = Text(" -${message.sender.name}", color=ChatColor.GRAY, italic = true)
         message.content.addLast(t)
     }
 }

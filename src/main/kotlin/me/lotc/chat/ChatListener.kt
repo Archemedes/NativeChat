@@ -86,9 +86,12 @@ class ChatListener(private val plugin: NativeChat) : Listener {
 
 
         if(firstSpace == -1){ //Switches active channel to be spoken in
-            d.chatter.channels.focusChannel(channel)
-            d.shouldContinue = false //Don't send anything, only switch channel
-            d.player.sendMessage("${AQUA}You are now talking in: ${channel.formattedTitle}")
+            checkTalkPermissions(d)
+            if(d.shouldContinue) {
+                d.chatter.channels.focusChannel(channel)
+                d.shouldContinue = false //Don't send anything, only switch channel
+                d.player.sendMessage("${AQUA}You are now talking in: ${channel.formattedTitle}")
+            }
             return
         } else {
             d.chatter.channels.subscribe(channel)
@@ -102,15 +105,15 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         val cd = c.cooldown
         if(cd <= 0 || d.player.hasPermission(c.permissionMod)) return
 
+        val remaining = d.chatter.channels.getRemainingCooldown(c).seconds
         if(d.chatter.channels.isOrSetCooldown(c)){
             d.shouldContinue = false
-            val remaining = d.chatter.channels.getRemainingCooldown(c).seconds
             d.player.sendMessage( asError("You must wait $remaining seconds before talking in ${c.formattedTitle}") )
         }
     }
 
     private fun checkTalkPermissions(d: ChatAttempt) {
-        if(!d.player.hasPermission(d.channel.permissionTalk)){
+        if(!d.channel.canTalk(d.player)){
             d.player.sendMessage( asError("You do not have permission to talk in ${d.channel.formattedTitle}") )
             d.shouldContinue = false
         }

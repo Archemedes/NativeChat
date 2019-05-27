@@ -16,7 +16,7 @@ class OutgoingChatPacket {
 
     init{
         out.writeUTF("Forward")
-        out.writeUTF("ALL")
+        out.writeUTF("ONLINE")
         out.writeUTF(BungeeListener.SUBCHANNEL_NAME)
     }
 

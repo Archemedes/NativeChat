@@ -24,6 +24,7 @@ import me.lotc.chat.BungeeListener.Intent.*
 import me.lotc.chat.depend.OmniBridge
 import net.md_5.bungee.api.chat.TextComponent
 import net.md_5.bungee.chat.ComponentSerializer
+import java.time.Instant
 
 
 interface Channel {

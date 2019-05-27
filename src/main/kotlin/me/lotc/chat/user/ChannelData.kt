@@ -105,7 +105,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
         val now = Instant.now()!!
         if(ins.isBefore(now)) return Duration.ZERO
 
-        return Duration.between(ins, now)
+        return Duration.between(now, ins)
     }
 
     fun isOrSetCooldown(channel: Channel) : Boolean{
@@ -116,6 +116,6 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
             Run(NativeChat.instance).delayed(channel.cooldown * 20L) { cooldowns.remove(channel.cmd) }
         }
 
-        return ins == null
+        return ins != null
     }
 }
