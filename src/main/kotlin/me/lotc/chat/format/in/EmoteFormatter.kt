@@ -21,6 +21,8 @@ class EmoteFormatter : InFormatter {
                 || c.last.endsWith("[!]") || c.last.endsWith("**"))
 
         if(willEmote){
+            message.context["emote"] = true
+
             val emoteColor = message.chatter?.emoteColor ?: YELLOW
             if(c.first.startsWith("[!]")) c.first.map { s->s.substring(3) }
             c.first.map { s->s.trimStart('*',' ') }

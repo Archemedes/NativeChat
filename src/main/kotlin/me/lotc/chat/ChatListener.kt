@@ -91,6 +91,7 @@ class ChatListener(private val plugin: NativeChat) : Listener {
             d.player.sendMessage("${AQUA}You are now talking in: ${channel.formattedTitle}")
             return
         } else {
+            d.chatter.channels.subscribe(channel)
             d.channel = channel
             d.message = msg.substring(firstSpace+1)
         }

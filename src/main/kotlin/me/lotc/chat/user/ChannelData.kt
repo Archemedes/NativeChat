@@ -15,7 +15,7 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 
 class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
-    internal val subscribedChannels = ArrayList<Channel>()
+    internal val subscribedChannels = HashSet<Channel>()
     var channel = NativeChat.get().chatManager.primordial
         internal set
 
@@ -26,7 +26,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
     }
 
     fun subscribe(channel: Channel) {
-        lock.write { subscribedChannels.add(channel) }
+        lock.write { if(channel !in subscribedChannels) subscribedChannels.add(channel) }
     }
 
     fun unsubscribe(channel: Channel){
@@ -39,7 +39,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
     fun focusChannel(channel: Channel){
         lock.write {
             this.channel = channel
-            if (channel !in subscribedChannels) subscribedChannels.add(channel)
+            subscribe(channel)
         }
     }
 
@@ -58,7 +58,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
         saveOnUser(negatedNode(channel.permission), true)
     }
 
-    fun isGlobalMuted(channel: Channel) : Boolean {
+    fun isGlobalMuted() : Boolean { //TODO
         return isNegated("chat.*.talk")
     }
 

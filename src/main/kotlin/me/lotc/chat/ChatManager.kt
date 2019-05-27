@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import net.md_5.bungee.api.ChatColor.*
+import org.bukkit.permissions.PermissionAttachment
 
 class ChatManager {
     val primordial : Channel = GlobalChannel("OOC", "Global Out Of Character", "ooc",

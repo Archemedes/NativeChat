@@ -51,7 +51,7 @@ class SettingsCommand : BaseCommand() {
 
     @Cmd("toggle auto-punctuation on roleplay chat")
     fun punctuation(p: Player, @Default("toggle") value : String){
-        var punctuate = !p.chat.wantsTimestamps
+        var punctuate = !p.chat.correctPunctuation
         if(value == "true") punctuate = true
         else if(value == "false") punctuate = false
         p.chat.correctPunctuation = punctuate

@@ -54,17 +54,8 @@ class Punctuation : InFormatter {
 
 
         for(txt in message.content){
-            //val lc = txt.content.toLowerCase()
             for( (ugly,nice) in replaces){
-                txt.map { m->m.replace(Regex("\\b$ugly\\b,",RegexOption.IGNORE_CASE),nice)}
-/*                val uglySpaced = " $ugly "
-
-                var index = lc.indexOf( uglySpaced )
-                while( index != -1 && index < lc.length){
-                    val resumeAt = index + uglySpaced.length
-                    txt.map { m-> m.substring(0, index) + " $nice " + m.substring(resumeAt) }
-                    index = lc.indexOf(uglySpaced, resumeAt)
-                }*/
+                txt.map { m->m.replace(Regex("\\b$ugly\\b",RegexOption.IGNORE_CASE),nice)}
             }
             var nc = txt.content
             nc = capitalize(nc, '.')
@@ -73,7 +64,7 @@ class Punctuation : InFormatter {
             txt.content = nc
         }
 
-        message.content.first.map(::capitalizeFirst)
+        if("emote" !in message.context) message.content.first.map(::capitalizeFirst)
     }
 
     private fun capitalize(content: String, dot: Char): String {
