@@ -58,6 +58,11 @@ interface Channel {
     }
 
     @JvmDefault
+    fun canModerate(s: CommandSender) : Boolean {
+        return s.hasPermission(permissionMod)
+    }
+
+    @JvmDefault
     fun isSubscribed(s: CommandSender) : Boolean {
         if(s is Player) return s.chat.channels.isSubscribed(this)
 
