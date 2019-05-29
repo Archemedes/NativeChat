@@ -71,6 +71,13 @@ local:
     looc:
       tag: 'S-OOC'
       cooldown: 15
+  leb:
+    color: 'DARK_GREEN'
+    bracketcolor: 'GREEN'
+    radius: 100
+    tag: 'Local Event'
+    cmd: 'leb'
+    title: 'Local Event Broadcast'
 
 broadcast:
   Broadcast:
@@ -79,7 +86,7 @@ broadcast:
   EventBC:
     cmd: 'ebc'
     title: 'Event Broadcast'
-    tag: 'Event Broadcast'
+    tag: 'Event'
     color: 'DARK_GREEN'
   StaffBC:
     cmd: 'sbc'
