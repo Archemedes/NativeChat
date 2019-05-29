@@ -16,6 +16,26 @@ import org.bukkit.entity.Player
 
 class ChatListener(private val plugin: NativeChat) : Listener {
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    fun continuity(e: AsyncPlayerChatEvent) {
+        val MAX_CONTINUITY_LENGTH = 520
+        val cont = e.player.chat.continuity
+
+        if(e.message.endsWith("--")){
+            val length = e.message.length - 2
+            if(length + cont.length > MAX_CONTINUITY_LENGTH) e.player.sendMessage(asError("Sorry! Your message is too long"))
+            else{
+                e.player.sendMessage("${GRAY}Your chat has been appended to your message")
+                cont.append(e.message.substring(0,length)).append(' ')
+            }
+
+            e.isCancelled = true
+        } else {
+            e.message = cont.toString() + e.message
+            cont.clear()
+        }
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun onEvent(e: AsyncPlayerChatEvent) { //Event MIGHT be Async, but sync if called from plugins
         e.isCancelled = true //Always cancel the default event because we're taking over the chat
@@ -27,9 +47,6 @@ class ChatListener(private val plugin: NativeChat) : Listener {
 
     fun chat(p: Player, msg: String){
         val d = ChatAttempt(p, msg)
-
-        continuityCheck(d)
-        if(!d.shouldContinue) return
 
         if(hasChannelBracket(d)) determineChannel(d)
         if(!d.shouldContinue) return
@@ -46,25 +63,6 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         }
 
         d.channel.handle(Message(BukkitSender(p), d.message))
-    }
-
-    private fun continuityCheck(d : ChatAttempt) {
-        val MAX_CONTINUITY_LENGTH = 270
-        val cont = d.chatter.continuity
-
-        if(d.message.endsWith("--")){
-            val length = d.message.length - 2
-            if(length + cont.length > MAX_CONTINUITY_LENGTH) d.player.sendMessage(asError("Sorry! Your message is too long"))
-            else{
-                d.player.sendMessage("${GRAY}Your chat has been appended to your message")
-                d.chatter.continuity.append(d.message.substring(0,length)).append(' ')
-            }
-
-            d.shouldContinue = false
-        } else {
-            d.message = cont.toString() + d.message
-            cont.clear()
-        }
     }
 
     private fun hasChannelBracket(d : ChatAttempt) = d.message.startsWith("#")
