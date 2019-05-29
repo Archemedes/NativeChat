@@ -78,6 +78,13 @@ local:
     tag: 'Local Event'
     cmd: 'leb'
     title: 'Local Event Broadcast'
+  loom:
+    color: 'BLUE'
+    bracketcolor: 'DARK_BLUE'
+    radius: 36
+    tag: 'Local Moderator'
+    cmd: 'loom'
+    title: 'Local Moderator'
 
 broadcast:
   Broadcast:
