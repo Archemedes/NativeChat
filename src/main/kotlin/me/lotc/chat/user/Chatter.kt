@@ -60,18 +60,18 @@ class Chatter(player: Player) {
                 if(!chan.isPermanent) metaNode(user, "rp_channel", chan.cmd)
 
             metaNode(user, "rp_focus", channel.cmd)
-            metaNode(user, "rp_emotecolor", emoteColor.name)
-            metaNode(user, "rp_emotestyle", emoteStyle.name)
+            metaNode(user, "rp_emotecolor", emoteColor.name, "YELLOW")
+            metaNode(user, "rp_emotestyle", emoteStyle.name, "EXPLICIT")
 
-            metaNode(user, "rp_timestamps", wantsTimestamps.toString())
-            metaNode(user, "rp_punctuate", correctPunctuation.toString())
-            metaNode(user, "rp_mention", isMentionable.toString())
+            metaNode(user, "rp_timestamps", wantsTimestamps.toString(), "false")
+            metaNode(user, "rp_punctuate", correctPunctuation.toString(), "true")
+            metaNode(user, "rp_mention", isMentionable.toString(), "true")
         }
         api.userManager.saveUser(user)
     }
 
-    private fun metaNode(user: User, key: String, value: String) {
-        user.setPermission(LuckPerms.getApi().nodeFactory.makeMetaNode(key,value).build())
+    private fun metaNode(user: User, key: String, value: String, default: String? = null) {
+        if(value != default) user.setPermission(LuckPerms.getApi().nodeFactory.makeMetaNode(key,value).build())
     }
 
     fun loadSettings(){
