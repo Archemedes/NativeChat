@@ -37,7 +37,7 @@ class Chatter(player: Player) {
 
     val channels = ChannelData(uuid, lock)
     val channel get() = channels.channel
-    val subscribedChannels get() = channels.subscribedChannels as List<Channel>
+    val subscribedChannels get() = channels.subscribedChannels as Collection<Channel>
 
     val continuity = StringBuilder()
     val focus = Focus(uuid)
