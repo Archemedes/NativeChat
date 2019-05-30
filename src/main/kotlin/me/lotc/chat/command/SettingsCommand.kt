@@ -62,7 +62,7 @@ class SettingsCommand : BaseCommand() {
 
     @Cmd("toggle players being able to mention you")
     fun mentionable(p: Player, @Default("toggle") value : String){
-        var mentionable = !p.chat.wantsTimestamps
+        var mentionable = !p.chat.isMentionable
         if(value == "true") mentionable = true
         else if(value == "false") mentionable = false
         p.chat.isMentionable = mentionable
