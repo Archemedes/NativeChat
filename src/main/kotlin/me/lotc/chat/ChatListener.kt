@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import net.md_5.bungee.api.ChatColor.*
 import co.lotc.core.util.MessageUtil.*
+import me.lotc.chat.channel.Channel
 import org.bukkit.entity.Player
 
 class ChatListener(private val plugin: NativeChat) : Listener {
@@ -84,8 +85,7 @@ class ChatListener(private val plugin: NativeChat) : Listener {
 
 
         if(firstSpace == -1){ //Switches active channel to be spoken in
-            checkTalkPermissions(d)
-            if(d.shouldContinue) {
+            if(checkTalkPermissions(channel, d.player)) {
                 d.chatter.channels.focusChannel(channel)
                 d.shouldContinue = false //Don't send anything, only switch channel
                 d.player.sendMessage("${AQUA}You are now talking in: ${channel.formattedTitle}")
@@ -111,10 +111,15 @@ class ChatListener(private val plugin: NativeChat) : Listener {
     }
 
     private fun checkTalkPermissions(d: ChatAttempt) {
-        if(!d.channel.canTalk(d.player)){
-            d.player.sendMessage( asError("You do not have permission to talk in ${d.channel.formattedTitle}") )
-            d.shouldContinue = false
+        d.shouldContinue = checkTalkPermissions(d.channel, d.player)
+    }
+
+    private fun checkTalkPermissions(c: Channel, p: Player) : Boolean{
+        if(!c.canTalk(p)){
+            p.sendMessage( asError("You do not have permission to talk in ${c.formattedTitle}") )
+            return false
         }
+        return true
     }
 
 
