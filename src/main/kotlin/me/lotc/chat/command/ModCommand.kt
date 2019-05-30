@@ -110,6 +110,7 @@ class ModCommand : BaseCommand() {
     }
 
     private fun pexOrBust(s: Sender, channel: Channel){
+        validate(s.hasPermission(channel.permission), "Could not find this channel")
         validate(s.hasPermission(channel.permissionMod), "You do not have permission to moderate this channel")
     }
 }
