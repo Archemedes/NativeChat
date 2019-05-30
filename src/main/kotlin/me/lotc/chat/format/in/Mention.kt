@@ -2,6 +2,7 @@ package me.lotc.chat.format.`in`
 
 import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
+import me.lotc.chat.channel.GlobalChannel
 import me.lotc.chat.depend.ArcheBridge
 import me.lotc.chat.message.Message
 import me.lotc.chat.message.Text
@@ -21,7 +22,7 @@ class Mention(val channel: Channel) : InFormatter {
         val theName = c.substring(apenstaartje)
 
         val pingedChannel = NativeChat.get().chatManager.getByAlias(theName.toLowerCase())
-        if(pingedChannel != null && pingedChannel.cmd != "tm") {
+        if(pingedChannel != null && pingedChannel is GlobalChannel && pingedChannel.isStaff && pingedChannel.cmd != "tm") {
             val key = "team_mention"
             if (msg.context.has(key)) {
                 val mentioned: HashSet<Channel> = msg.context[key]
