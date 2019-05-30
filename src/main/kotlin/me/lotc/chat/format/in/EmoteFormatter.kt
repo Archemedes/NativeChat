@@ -42,7 +42,7 @@ class EmoteFormatter : InFormatter {
             prefixes.removeLast() //Understood to be the colon
             prefixes.last.color = emoteColor //Understood to be the username
             if(willNamelessEmote) prefixes.last.content = "[!] " //Retains hover and click stuff
-            else if(c.first.content[0] != '\'') prefixes.addLast(Text(" "))
+            else if(c.first.content.isEmpty() || c.first.content[0] != '\'') prefixes.addLast(Text(" "))
 
         } else { //Must present as normal RP speech. Add quotes
             c.first.map { s-> '“' + s.trimStart('"') }

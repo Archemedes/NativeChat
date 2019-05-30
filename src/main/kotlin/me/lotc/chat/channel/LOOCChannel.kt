@@ -12,7 +12,8 @@ class LOOCChannel(parent : LocalChannel, tag: String, title: String, cmd: String
         LuckoPrefixFormatter(),
         AddChannel(this),
         ColoredText(ChatColor.GRAY),
-        LinkFormatter()
+        LinkFormatter(),
+        Mention(this)
     )
 
     override val outgoingFormatters = listOf(AddTimestamps())
