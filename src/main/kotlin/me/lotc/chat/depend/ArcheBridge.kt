@@ -21,4 +21,8 @@ object ArcheBridge {
         return ArcheCore.getControls().getPlayerUUIDFromName(username)
     }
 
+    fun getDisplayName(p: Player) : String {
+        return ArcheCore.getPersona(p)?.chatName ?: p.displayName
+    }
+
 }

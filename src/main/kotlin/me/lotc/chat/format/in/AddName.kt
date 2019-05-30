@@ -14,7 +14,10 @@ class AddName(private val displayName : Boolean) : InFormatter {
         var name = username
 
         val p = message.player
-        if(displayName) name = p?.displayName ?: name
+        if(displayName){
+            name = if(ArcheBridge.isEnabled && p != null) ArcheBridge.getDisplayName(p)
+            else p?.displayName ?: name
+        }
 
         val new = ArcheBridge.isEnabled && ArcheBridge.isNew(p)
 
