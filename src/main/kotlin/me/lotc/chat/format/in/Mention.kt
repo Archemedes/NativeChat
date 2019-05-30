@@ -38,12 +38,7 @@ class Mention(val channel: Channel) : InFormatter {
 
         }
 
-
-        val pinged = when{
-            ArcheBridge.isEnabled -> ArcheBridge.getUUID(theName)?.let { Bukkit.getPlayer(it) }
-            else -> Bukkit.getPlayerExact(theName)
-
-        }
+        val pinged = Bukkit.getPlayer(theName)
 
         pinged?: return rawName
         if(pinged.chat.isMentionable && pinged.chat.channels.isSubscribed(channel)){
