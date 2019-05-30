@@ -65,6 +65,24 @@ class Punctuation : InFormatter {
         }
 
         if("emote" !in message.context) message.content.first.map(::capitalizeFirst)
+
+        val lastText = message.content.last
+        var last = lastText.content
+
+        //Add a period if no punctuation found at the very end
+        if(last.isNotBlank()) {
+            var replaceQuote = false
+            if (last.endsWith("”")) {
+                replaceQuote = true
+                last = last.trimEnd('”')
+            }
+
+            if(last.last() != '.' && last.last() != ',' && last.last() != '!' && last.last() != '?')
+                last += '.'
+            if(replaceQuote) last += '”'
+
+            lastText.content = last
+        }
     }
 
     private fun capitalize(content: String, dot: Char): String {
