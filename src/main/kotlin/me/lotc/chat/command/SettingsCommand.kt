@@ -31,7 +31,7 @@ class SettingsCommand : BaseCommand() {
 
     @Cmd(value="Set your emote color", permission = "chat.emotecolor")
     fun emotecolor(p: Player, color: ChatColor){
-        val alloweds = setOf(DARK_BLUE, RED, YELLOW, GOLD, AQUA, GREEN, DARK_GREEN, DARK_RED, DARK_AQUA, DARK_PURPLE, LIGHT_PURPLE)
+        val alloweds = setOf(BLUE, DARK_BLUE, RED, YELLOW, GOLD, AQUA, GREEN, DARK_GRAY, DARK_GREEN, DARK_RED, DARK_AQUA, DARK_PURPLE, LIGHT_PURPLE)
         val col = color.name.toLowerCase().replace('_',' ').capitalize()
         validate(color in alloweds, "This is not an allowed color for emotes:$WHITE $col")
         p.chat.emoteColor = color
