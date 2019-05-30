@@ -43,7 +43,7 @@ class Chatter(player: Player) {
 
     var emoteColor by Lockable(lock, ChatColor.YELLOW)
     var wantsTimestamps by Lockable(lock, false)
-    var emoteStyle by Lockable(lock, EmoteStyle.EXPLICIT)
+    var emoteStyle by Lockable(lock, EmoteStyle.QUOTATIONS)
     var correctPunctuation by Lockable(lock, true)
     var isMentionable by Lockable(lock, true)
 
@@ -60,7 +60,7 @@ class Chatter(player: Player) {
 
             metaNode(user, "rp_focus", channel.cmd)
             metaNode(user, "rp_emotecolor", emoteColor.name, "YELLOW")
-            metaNode(user, "rp_emotestyle", emoteStyle.name, "EXPLICIT")
+            metaNode(user, "rp_emotestyle", emoteStyle.name, "QUOTATIONS")
 
             metaNode(user, "rp_timestamps", wantsTimestamps.toString(), "false")
             metaNode(user, "rp_punctuate", correctPunctuation.toString(), "true")
