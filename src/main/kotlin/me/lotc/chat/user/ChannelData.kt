@@ -3,8 +3,10 @@ package me.lotc.chat.user
 import me.lotc.chat.NativeChat
 import me.lotc.chat.channel.Channel
 import co.lotc.core.bukkit.util.Run
+import me.lotc.chat.ChatManager
 import me.lucko.luckperms.LuckPerms
 import me.lucko.luckperms.api.Node
+import org.bukkit.Bukkit
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -31,8 +33,11 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
 
     fun unsubscribe(channel: Channel){
         lock.write {
-            if(this.channel === channel) this.channel = NativeChat.get().chatManager.primordial
             subscribedChannels.remove(channel)
+            if(this.channel === channel) this.channel = subscribedChannels.stream()
+                .filter { it.canTalk(Bukkit.getPlayer(owner)!!) }
+                .findFirst()
+                .orElse(NativeChat.get().chatManager.primordial.also{ subscribedChannels.add(it)} )
         }
     }
 
