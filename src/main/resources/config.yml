@@ -57,6 +57,7 @@ local:
     radius: 3
     looc:
       tag: 'w-OOC'
+      cmd: 'wooc'
       cooldown: 6
   Quiet:
     title: 'Undertone'
@@ -65,6 +66,7 @@ local:
     cmd: 'q'
     looc:
       tag: 'Q-OOC'
+      cmd: 'qooc'
       cooldown: 6
   Shout:
     cmd: 's'
@@ -72,6 +74,7 @@ local:
     radius: 48
     looc:
       tag: 'S-OOC'
+      cmd: 'sooc'
       cooldown: 15
   leb:
     color: 'DARK_GREEN'
