@@ -30,7 +30,7 @@ class EmoteFormatter : InFormatter {
             c.last.map(transform)
 
             //Hack to add a closing quote to a message
-            val lastText = message.content.last
+            val lastText = c.last
             if( (lastText.content.count{it=='"'} % 2) == 1){
                 lastText.content = lastText.content + "\""
             }
@@ -38,11 +38,15 @@ class EmoteFormatter : InFormatter {
             c.forEach { it.color = emoteColor }
             message.transform("\".*?\"", ::quotify)
 
-            val prefixes = message.prefixes
-            prefixes.removeLast() //Understood to be the colon
-            prefixes.last.color = emoteColor //Understood to be the username
-            if(willNamelessEmote) prefixes.last.content = "[!] " //Retains hover and click stuff
-            else if(c.first.content.isEmpty() || c.first.content[0] != '\'') prefixes.addLast(Text(" "))
+            val formatUsername = willNamelessEmote || c.first.startsWith("“")
+
+            if(formatUsername) {
+                val prefixes = message.prefixes
+                prefixes.removeLast() //Understood to be the colon
+                prefixes.last.color = emoteColor //Understood to be the username
+                if (willNamelessEmote) prefixes.last.content = "[!] " //Retains hover and click stuff
+                else if (c.first.content.isEmpty() || c.first.content[0] != '\'') prefixes.addLast(Text(" "))
+            }
 
         } else { //Must present as normal RP speech. Add quotes
             c.first.map { s-> '“' + s.trimStart('"') }
