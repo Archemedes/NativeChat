@@ -37,8 +37,14 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
             if(this.channel === channel) this.channel = subscribedChannels.stream()
                 .filter { it.canTalk(Bukkit.getPlayer(owner)!!) }
                 .findFirst()
-                .orElse(NativeChat.get().chatManager.primordial.also{ subscribedChannels.add(it)} )
+                .orElseGet(::theDefault)
         }
+    }
+
+    private fun theDefault():Channel{
+        val prim = NativeChat.get().chatManager.primordial
+        subscribedChannels.add(prim)
+        return prim
     }
 
     fun focusChannel(channel: Channel){
