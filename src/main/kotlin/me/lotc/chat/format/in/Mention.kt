@@ -21,7 +21,7 @@ class Mention(val channel: Channel) : InFormatter {
         val theName = c.substring(apenstaartje)
 
         val pingedChannel = NativeChat.get().chatManager.getByAlias(theName.toLowerCase())
-        if(pingedChannel != null) {
+        if(pingedChannel != null && pingedChannel.cmd != "tm") {
             val key = "team_mention"
             if (msg.context.has(key)) {
                 val mentioned: HashSet<Channel> = msg.context[key]

@@ -29,6 +29,12 @@ class EmoteFormatter : InFormatter {
             val transform: (String) -> String = { s -> s.trimEnd('*',' ') }
             c.last.map(transform)
 
+            //Hack to add a closing quote to a message
+            val lastText = message.content.last
+            if( (lastText.content.count{it=='"'} % 2) == 1){
+                lastText.content = lastText.content + "\""
+            }
+
             c.forEach { it.color = emoteColor }
             message.transform("\".*?\"", ::quotify)
 
