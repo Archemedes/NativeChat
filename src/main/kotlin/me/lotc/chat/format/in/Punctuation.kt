@@ -52,15 +52,17 @@ class Punctuation : InFormatter {
         val c = message.chatter ?: return
         if(!c.correctPunctuation) return
 
-
+        val capDot = CapParser('.')
+        val capQmk = CapParser('?')
+        val capExc = CapParser('!')
         for(txt in message.content){
             for( (ugly,nice) in replaces){
                 txt.map { m->m.replace(Regex("\\b$ugly\\b",RegexOption.IGNORE_CASE),nice)}
             }
             var nc = txt.content
-            nc = capitalize(nc, '.')
-            nc = capitalize(nc, '?')
-            nc = capitalize(nc, '!')
+            nc = capDot.capitalize(nc)
+            nc = capQmk.capitalize(nc)
+            nc = capExc.capitalize(nc)
             txt.content = nc
         }
 
@@ -85,22 +87,25 @@ class Punctuation : InFormatter {
         }
     }
 
-    private fun capitalize(content: String, dot: Char): String {
-        val sb = StringBuilder()
+    private class CapParser(val dot: Char){
         var capitalize = false
-        for(x in content){
-            if(x==dot) {
-                capitalize = true
-                sb.append(x)
-            } else if(capitalize && x.isLetter()) {
-                sb.append(x.toUpperCase())
-                capitalize = false
-            } else {
-                sb.append(x)
-            }
-        }
 
-        return sb.toString()
+        fun capitalize(content: String): String {
+            val sb = StringBuilder()
+            for (x in content) {
+                if (x == dot) {
+                    capitalize = true
+                    sb.append(x)
+                } else if (capitalize && x.isLetter()) {
+                    sb.append(x.toUpperCase())
+                    capitalize = false
+                } else {
+                    sb.append(x)
+                }
+            }
+
+            return sb.toString()
+        }
     }
 
     private fun capitalizeFirst(content:String) : String {
