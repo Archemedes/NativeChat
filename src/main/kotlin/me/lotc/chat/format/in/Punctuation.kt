@@ -72,13 +72,13 @@ class Punctuation : InFormatter {
         var last = lastText.content
 
         //Add a period if no punctuation found at the very end
-        if(last.isNotBlank()) {
-            var replaceQuote = false
-            if (last.endsWith("”")) {
-                replaceQuote = true
-                last = last.trimEnd('”')
-            }
+        var replaceQuote = false
+        if (last.endsWith("”")) {
+            replaceQuote = true
+            last = last.trimEnd('”')
+        }
 
+        if(last.isNotBlank()) {
             if(last.last() != '.' && last.last() != ',' && last.last() != '!' && last.last() != '?')
                 last += '.'
             if(replaceQuote) last += '”'
