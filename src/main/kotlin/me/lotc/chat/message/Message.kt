@@ -39,6 +39,10 @@ class Message(val sender: Sender, initialText: String) {
         return content.stream().anyMatch { it.content.contains(middle, ignoreCase)}
     }
 
+    fun prefixToRawText() = prefixes.map { it.content }.joinToString("")
+
+    fun toRawText() = content.map { it.content }.joinToString("")
+
     fun transform(regex: String, transformer : (initial: Text) -> Text) {
         val newContent = LinkedList<Text>()
         for(txt in content){

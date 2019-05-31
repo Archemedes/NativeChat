@@ -35,10 +35,10 @@ class EmoteFormatter : InFormatter {
                 lastText.content = lastText.content + "\""
             }
 
+
             c.forEach { it.color = emoteColor }
             message.transform("\".*?\"", ::quotify)
-
-            val formatUsername = willNamelessEmote || c.first.startsWith("“")
+            val formatUsername = willNamelessEmote || !message.toRawText().startsWith("“")
 
             if(formatUsername) {
                 val prefixes = message.prefixes
