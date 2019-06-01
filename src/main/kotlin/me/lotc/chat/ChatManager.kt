@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap
 import net.md_5.bungee.api.ChatColor.*
 import org.bukkit.Bukkit
 import org.bukkit.permissions.Permission
-import org.bukkit.permissions.PermissionAttachment
 import org.bukkit.permissions.PermissionDefault
 
 class ChatManager {
@@ -21,9 +20,12 @@ class ChatManager {
         false, GRAY, DARK_GRAY, false, 3, isStaff = false, isBungee = true
     )
     val channels get() = channelAliases.values as Collection<Channel>
+    val defaultLocal get() = firstLocalChannel
 
     private val channelAliases = ConcurrentHashMap<String, Channel>()
     private val players = ConcurrentHashMap<UUID, Chatter>()
+
+    private var firstLocalChannel : LocalChannel? = null
 
     init{
         channelAliases[primordial.cmd] = primordial
@@ -34,6 +36,7 @@ class ChatManager {
         for(c in channels){
             addChannel(c)
             (c as? LocalChannel)?.looc?.run(::addChannel)
+            if(firstLocalChannel == null && c is LocalChannel) firstLocalChannel = c
         }
     }
 

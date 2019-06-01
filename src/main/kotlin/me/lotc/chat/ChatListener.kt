@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import net.md_5.bungee.api.ChatColor.*
 import co.lotc.core.util.MessageUtil.*
 import me.lotc.chat.channel.Channel
+import me.lotc.chat.channel.LOOCChannel
 import org.bukkit.entity.Player
 
 class ChatListener(private val plugin: NativeChat) : Listener {
@@ -52,6 +53,9 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         if(hasChannelBracket(d)) determineChannel(d)
         if(!d.shouldContinue) return
 
+        redirectOnSymbol(d)
+        if(!d.shouldContinue) return
+
         checkTalkPermissions(d)
         if(!d.shouldContinue) return
 
@@ -64,6 +68,26 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         }
 
         d.channel.handle(Message(BukkitSender(p), d.message))
+    }
+
+    private fun redirectOnSymbol(d: ChatAttempt){
+        val m = d.message
+
+        if(m.startsWith("((") || m.startsWith("[[")){
+            d.channel = (d.channel as? LOOCChannel) ?:
+                    (d.channel as? LocalChannel)?.looc ?:
+                    NativeChat.get().chatManager.defaultLocal?.looc ?:
+                    d.channel
+            d.message = m.trimStart('(','[').trimEnd(')',']')
+        }else if(m.startsWith("\"") || m.startsWith("*") || m.startsWith("[!]")){
+            if(d.channel is LocalChannel && d.channel !is LOOCChannel) return
+
+            d.channel = (d.channel as? LOOCChannel)?.parent ?:
+                    NativeChat.get().chatManager.defaultLocal ?:
+                    d.channel
+        }
+
+        checkTalkPermissions(d)
     }
 
     private fun hasChannelBracket(d : ChatAttempt) = d.message.startsWith("#")
