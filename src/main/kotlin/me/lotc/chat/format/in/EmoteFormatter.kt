@@ -29,16 +29,8 @@ class EmoteFormatter : InFormatter {
             val transform: (String) -> String = { s -> s.trimEnd('*',' ') }
             c.last.map(transform)
 
-            //Hack to add a opening/closing quote to a message
-            val rawText = message.toRawText()
-            if( (rawText.count{it=='"'} % 2) == 1){
-                if(!c.last.content.endsWith("\"")) c.last.content += "\""
-                else if(!c.first.content.startsWith("\"")) c.first.content = "\"" + c.first.content
-            }
-
-
             c.forEach { it.color = emoteColor }
-            message.transform("\".*?\"", ::quotify)
+            message.transform("((?<=\\s|^)\").*?(\$|\"(?=\\s|\$))|(^|(?<=\\s|^)\").*?(\"(?=\\s|\$))", ::quotify)
             val formatUsername = willNamelessEmote || !message.toRawText().startsWith("“")
 
             if(formatUsername) {
@@ -58,7 +50,7 @@ class EmoteFormatter : InFormatter {
     private fun quotify(speech : Text) : Text {
         speech.color = WHITE
         var c = speech.content
-        c = c.substring(1, c.length - 1)
+        c = c.trim('"')
         speech.content = "“$c”"
         return speech
     }

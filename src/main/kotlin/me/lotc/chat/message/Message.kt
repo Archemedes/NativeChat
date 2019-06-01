@@ -60,12 +60,17 @@ class Message(val sender: Sender, initialText: String) {
             for(i in 1 until unmatched.size){
                 matcher.find()
                 val sb = StringBuilder()
-                if(matcher.groupCount() > 0) for(j in 0 until matcher.groupCount()) sb.append(matcher.group(j))
-                else sb.append(matcher.group())
+                if(matcher.groupCount() > 0) {
+                    for(j in 0 until matcher.groupCount()) if(matcher.group(j) != null) sb.append(matcher.group(j))
+                }else {
+                    sb.append(matcher.group())
+                }
 
-                val matchedText = transformer.invoke( txt.copy(content = sb.toString()) )
-                newContent.add(matchedText)
-                if(unmatched[i].isNotEmpty()) newContent.add(txt.copy(content = unmatched[i]))
+                if(sb.isNotEmpty()) {
+                    val matchedText = transformer.invoke(txt.copy(content = sb.toString()))
+                    newContent.add(matchedText)
+                    if (unmatched[i].isNotEmpty()) newContent.add(txt.copy(content = unmatched[i]))
+                }
             }
         }
 
