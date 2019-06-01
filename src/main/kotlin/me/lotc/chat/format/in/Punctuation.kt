@@ -56,10 +56,15 @@ class Punctuation : InFormatter {
         val c = message.chatter ?: return
         if(!c.correctPunctuation) return
 
-        val capDot = CapParser('.')
+
+
+        //Capitalize first letter if its not an emote and everything after .?!
+        val capDot = CapParser('.', "emote" !in message.context)
         val capQmk = CapParser('?')
         val capExc = CapParser('!')
         for(txt in message.content){
+            txt.map { m->m.replace(Regex("\\.\\.\\."),"…")}
+
             for( (ugly,nice) in replaces){
                 txt.map { m->m.replace(Regex("\\b$ugly\\b",RegexOption.IGNORE_CASE),nice)}
             }
@@ -69,8 +74,6 @@ class Punctuation : InFormatter {
             nc = capExc.capitalize(nc)
             txt.content = nc
         }
-
-        if("emote" !in message.context) message.content.first.map(::capitalizeFirst)
 
         val lastText = message.content.last
         var last = lastText.content
@@ -91,8 +94,7 @@ class Punctuation : InFormatter {
         }
     }
 
-    private class CapParser(val dot: Char){
-        var capitalize = false
+    private class CapParser(val dot: Char, var capitalize: Boolean = false){
 
         fun capitalize(content: String): String {
             val sb = StringBuilder()
@@ -110,21 +112,5 @@ class Punctuation : InFormatter {
 
             return sb.toString()
         }
-    }
-
-    private fun capitalizeFirst(content:String) : String {
-        val sb = StringBuilder()
-        for(i in 0 until content.length){
-            val x = content[i]
-            if(x.isLetter()){
-                sb.append(x.toUpperCase())
-                if(i + 1 < content.length) sb.append(content.substring(i+1))
-                break
-            }  else {
-                sb.append(x)
-            }
-        }
-
-        return sb.toString()
     }
 }
