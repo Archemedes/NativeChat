@@ -11,6 +11,8 @@ class Punctuation : InFormatter {
             "doesnt" to "doesn't",
             "theres" to "there's",
             "youre" to "you're",
+            "youve" to "you've",
+            "youd" to "you'd",
             "wheres" to "where's",
             "yall" to "y'all",
             "whered" to "where'd",
@@ -44,8 +46,10 @@ class Punctuation : InFormatter {
             "whatve" to "what've",
             "whats" to "what's",
             "i'll" to "I'll",
-            "didn't" to "didn't",
-            "gday" to "g'day")
+            "didnt" to "didn't",
+            "gday" to "g'day",
+            "cant" to "can't",
+            "whos" to "who's")
     }
 
     override fun format(message: Message) {
