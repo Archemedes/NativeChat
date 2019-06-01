@@ -71,6 +71,8 @@ class ChatListener(private val plugin: NativeChat) : Listener {
     }
 
     private fun redirectOnSymbol(d: ChatAttempt){
+        if(!d.chatter.shouldRedirect) return
+
         val m = d.message
 
         if(m.startsWith("((") || m.startsWith("[[")){

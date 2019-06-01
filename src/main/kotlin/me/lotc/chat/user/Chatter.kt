@@ -46,6 +46,7 @@ class Chatter(player: Player) {
     var emoteStyle by Lockable(lock, EmoteStyle.QUOTATIONS)
     var correctPunctuation by Lockable(lock, true)
     var isMentionable by Lockable(lock, true)
+    var shouldRedirect by Lockable(lock, true)
 
 
     fun saveSettings(){
@@ -65,6 +66,7 @@ class Chatter(player: Player) {
             metaNode(user, "rp_timestamps", wantsTimestamps.toString(), "false")
             metaNode(user, "rp_punctuate", correctPunctuation.toString(), "true")
             metaNode(user, "rp_mention", isMentionable.toString(), "true")
+            metaNode(user, "rp_redirect", shouldRedirect.toString(), "true")
         }
         api.userManager.saveUser(user)
     }
@@ -102,6 +104,7 @@ class Chatter(player: Player) {
         if("rp_timestamps" in settings) wantsTimestamps = settings["rp_timestamps"][0]!!.toBoolean()
         if("rp_punctuate" in settings) correctPunctuation = settings["rp_punctuate"][0]!!.toBoolean()
         if("rp_mention" in settings) isMentionable = settings["rp_mention"][0]!!.toBoolean()
+        if("rp_redirect" in settings) shouldRedirect = settings["rp_redirect"][0]!!.toBoolean()
     }
 }
 

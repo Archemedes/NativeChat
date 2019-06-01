@@ -20,6 +20,7 @@ class SettingsCommand : BaseCommand() {
         setting("Timestamps on Messages", c.wantsTimestamps, "timestamps")
         setting("Auto-correct Punctuation", c.wantsTimestamps, "punctuation")
         setting("Ping you on mention", c.isMentionable, "mentionable")
+        setting("Redirect messages", c.shouldRedirect, "redirect")
     }
 
     @Cmd("Set your eagerness to emote your actions")
@@ -69,6 +70,17 @@ class SettingsCommand : BaseCommand() {
 
         if(mentionable) msg("${GOLD}Now receiving pings on mention")
         else msg("${GOLD}No longer receiving pings on mention")
+    }
+
+    @Cmd("Redirect messages to different channels if you use certain symbols (Brackets, asterix, quotes)")
+    fun redirect(p: Player, @Default("toggle") value : String){
+        var redirect = !p.chat.shouldRedirect
+        if(value == "true") redirect = true
+        else if(value == "false") redirect = false
+        p.chat.shouldRedirect = redirect
+
+        if(redirect) msg("${GOLD}Now redirecting chat messages when starting with ((,*,\"")
+        else msg("${GOLD}No longer redirecting chat messages based on starting symbol")
     }
 
     private fun setting(settingName: String, value: Any, command : String){
