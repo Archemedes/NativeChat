@@ -62,11 +62,6 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         checkCooldown(d)
         if(!d.shouldContinue) return
 
-        if(d.message.startsWith("((") || d.message.startsWith("[[")){
-            d.channel = (d.channel as? LocalChannel)?.looc ?: d.channel
-            d.message = d.message.trimStart('(','[').trimEnd(')',']')
-        }
-
         d.channel.handle(Message(BukkitSender(p), d.message))
     }
 
@@ -127,7 +122,8 @@ class ChatListener(private val plugin: NativeChat) : Listener {
     private fun checkCooldown(d: ChatAttempt){
         val c = d.channel
         val cd = c.cooldown
-        if(cd <= 0 || d.player.hasPermission(c.permissionMod)) return
+        if(cd <= 0 || d.player.hasPermission("chat.nocooldown") || d.player.hasPermission(c.permissionMod))
+            return
 
         val remaining = d.chatter.channels.getRemainingCooldown(c).seconds
         if(d.chatter.channels.isOrSetCooldown(c)){

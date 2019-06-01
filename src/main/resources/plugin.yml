@@ -17,3 +17,6 @@ permissions:
     description: Allows you to customize the color of your emotes
   chat.markdown:
     description: Lets you use inbuilt markdown formatting for bold and italic RP text
+  chat.nocooldown:
+    description: Cooldown timers set by channels do not apply
+    default: op
