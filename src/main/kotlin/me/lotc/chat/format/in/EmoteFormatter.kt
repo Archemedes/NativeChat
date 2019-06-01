@@ -29,10 +29,11 @@ class EmoteFormatter : InFormatter {
             val transform: (String) -> String = { s -> s.trimEnd('*',' ') }
             c.last.map(transform)
 
-            //Hack to add a closing quote to a message
-            val lastText = c.last
-            if( (lastText.content.count{it=='"'} % 2) == 1){
-                lastText.content = lastText.content + "\""
+            //Hack to add a opening/closing quote to a message
+            val rawText = message.toRawText()
+            if( (rawText.count{it=='"'} % 2) == 1){
+                if(!c.last.content.endsWith("\"")) c.last.content += "\""
+                else if(!c.first.content.startsWith("\"")) c.first.content = "\"" + c.first.content
             }
 
 
