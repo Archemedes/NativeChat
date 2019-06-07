@@ -1,15 +1,16 @@
 package me.lotc.chat.command
 
 import co.lotc.core.agnostic.Sender
-import me.lotc.chat.channel.Channel
-import me.lotc.chat.user.chat
 import co.lotc.core.command.annotate.Cmd
 import co.lotc.core.command.annotate.Default
 import co.lotc.core.util.TimeUtil
 import me.lotc.chat.BungeeListener
-import org.bukkit.entity.Player
+import me.lotc.chat.channel.Channel
+import me.lotc.chat.user.chat
 import net.md_5.bungee.api.ChatColor.*
+import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Player
 import java.time.Duration
 
 class ModCommand : BaseCommand() {
@@ -99,6 +100,18 @@ class ModCommand : BaseCommand() {
             msg("$GOLD ${p.name}$GREEN IS in ${channel.formattedTitle}")
         else
             msg("$GOLD ${p.name}$DARK_PURPLE IS NOT in ${channel.formattedTitle}")
+    }
+
+    @Cmd("List all players currently in the channel")
+    fun list(us: Sender, channel: Channel) {
+        pexOrBust(us, channel)
+        val players = HashSet<String>()
+
+        for (player in Bukkit.getOnlinePlayers())
+            if (channel.isSubscribed(player))
+                players.add(player.name)
+        msg("$LIGHT_PURPLE Players in ${channel.formattedTitle} (${players.size}): ")
+        msg(players.joinToString(", "))
     }
 
     private fun pluginMessage(s: Sender, channel: Channel, intent: BungeeListener.Intent, p: OfflinePlayer, duration:Duration) {
