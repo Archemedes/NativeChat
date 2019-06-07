@@ -54,7 +54,8 @@ local:
   W:
     title: 'Whisper'
     color: 'BLUE'
-    radius: 3
+    radius: 2
+    quiet: true
     looc:
       tag: 'w-OOC'
       cmd: 'wooc'
@@ -64,6 +65,7 @@ local:
     color: 'AQUA'
     radius: 8
     cmd: 'q'
+    quiet: true
     looc:
       tag: 'Q-OOC'
       cmd: 'qooc'

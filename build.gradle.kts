@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "me.lotc"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     /*maven{
@@ -30,7 +30,7 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:4.4.0")
     compileOnly("co.lotc:tythan-bukkit:0.7")
     compileOnly("me.lucko.luckperms:luckperms-api:4.4")
-    compileOnly("com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT")
+    compileOnly("com.destroystokyo.paper:paper-api:1.14.2-R0.1-SNAPSHOT")
     compile(kotlin("stdlib-jdk8"))
 }
 

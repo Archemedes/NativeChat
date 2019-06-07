@@ -17,7 +17,6 @@ class ComposedMessage(var sender: Sender,
     val finalMessage by lazy {
         val arrayPre = prefixes.map { it.toComponent() }.toTypedArray()
         val arraySuf = suffixes.map { it.toComponent() }.toTypedArray()
-
         arrayOf(*arrayPre, *preamble, *content, *arraySuf)
     }
 
