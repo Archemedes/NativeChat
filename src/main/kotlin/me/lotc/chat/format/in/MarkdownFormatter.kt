@@ -8,6 +8,7 @@ class MarkdownFormatter: InFormatter {
 
     override fun format(message: Message) {
         if(message.sender.hasPermission("chat.markdown")) {
+            message.transform("/.+?\\^.+?\\^.+?/", ::setItalic)
             message.transform("\\^.+?\\^", ::setBold)
             message.transform("/.+?/", ::setItalic)
         }
