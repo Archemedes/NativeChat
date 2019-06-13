@@ -91,7 +91,7 @@ class ChannelData(val owner: UUID, val lock: ReentrantReadWriteLock) {
 
     private fun negatedNode(permission: String, duration : Duration? = null) : Node {
         val node = lucko().nodeFactory.newBuilder(permission).setNegated(true)
-        duration?.let{ node.setExpiry(Instant.now().plus(it).toEpochMilli()) }
+        duration?.let{ node.setExpiry(Instant.now().plus(it).epochSecond) }
         return node.build()
     }
 
