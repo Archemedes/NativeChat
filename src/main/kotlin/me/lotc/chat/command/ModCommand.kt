@@ -8,6 +8,7 @@ import me.lotc.chat.BungeeListener
 import me.lotc.chat.channel.Channel
 import me.lotc.chat.user.chat
 import net.md_5.bungee.api.ChatColor.*
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -39,7 +40,7 @@ class ModCommand : BaseCommand() {
 
         us.sendMessage("${GRAY}We have muted$GOLD ${p.name}$GRAY in ${channel.formattedTitle}")
         if(millis == 0L) p.sendMessage("${DARK_RED}You were muted in ${channel.formattedTitle}")
-        else p.sendMessage("${DARK_RED}You were muted in ${channel.formattedTitle}$DARK_RED for ${TimeUtil.printMillis(millis)}")
+        else p.sendMessage("${DARK_RED}You were muted in ${channel.formattedTitle}$DARK_RED for ${asTime(millis)}")
     }
 
     @Cmd("Unmute a player in channel")
@@ -66,7 +67,7 @@ class ModCommand : BaseCommand() {
 
         us.sendMessage("${GRAY}We have banned$GOLD ${p.name}$GRAY in ${channel.formattedTitle}")
         if(millis == 0L) p.sendMessage("${DARK_RED}You were banned from ${channel.formattedTitle}")
-        else p.sendMessage("${DARK_RED}You were banned from ${channel.formattedTitle}$DARK_RED for ${TimeUtil.printMillis(millis)}")
+        else p.sendMessage("${DARK_RED}You were banned from ${channel.formattedTitle}$DARK_RED for ${asTime(millis)}")
     }
 
     @Cmd("Unban a player in channel")
@@ -113,6 +114,9 @@ class ModCommand : BaseCommand() {
         msg("$LIGHT_PURPLE Players in ${channel.formattedTitle} (${players.size}): ")
         msg(players.joinToString(", "))
     }
+
+    private fun asTime(millis: Long) = TextComponent.toLegacyText(TimeUtil.print(millis, false, GRAY, DARK_RED))
+
 
     private fun pluginMessage(s: Sender, channel: Channel, intent: BungeeListener.Intent, p: OfflinePlayer, duration:Duration) {
         val out = BungeeListener.newPluginMessageDataOutput(s, channel, intent)
