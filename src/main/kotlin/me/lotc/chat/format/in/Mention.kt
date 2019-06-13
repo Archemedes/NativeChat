@@ -13,7 +13,7 @@ import org.bukkit.entity.Player
 
 class Mention(val channel: Channel) : InFormatter {
     override fun format(message: Message) {
-        message.transform("(\\s|^)@[\\w\\d_]{2,16}\\b"){ asMention(message, it)}
+        message.transform("(?<=\\s|^)@[\\w\\d_]{2,16}\\b"){ asMention(message, it)}
     }
 
     private fun asMention(msg: Message, rawName: Text) : Text {
@@ -35,7 +35,6 @@ class Mention(val channel: Channel) : InFormatter {
             val newName = Text(asPing, color = pingedChannel.color)
             newName.tooltip("${GRAY}Can be pinged with ${pingedChannel.color}@${pingedChannel.cmd}")
             return newName
-
         }
 
         val pinged = Bukkit.getPlayer(theName)
@@ -44,7 +43,7 @@ class Mention(val channel: Channel) : InFormatter {
         if(pinged.chat.isMentionable && pinged.chat.channels.isSubscribed(channel)){
             val asPing = c.substring(0, apenstaartje) + pinged.name
             val newName = Text(asPing, color=DARK_AQUA)
-            newName.suggests("/msg $asPing ")
+            newName.suggests("/msg ${asPing.substring(1)} ")
             msg.context["mention:${pinged.uniqueId}"] = true
             return newName
         }
