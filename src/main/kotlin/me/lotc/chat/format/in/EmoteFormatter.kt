@@ -3,7 +3,8 @@ package me.lotc.chat.format.`in`
 import me.lotc.chat.message.Message
 import me.lotc.chat.message.Text
 import me.lotc.chat.user.EmoteStyle
-import net.md_5.bungee.api.ChatColor.*
+import net.md_5.bungee.api.ChatColor.WHITE
+import net.md_5.bungee.api.ChatColor.YELLOW
 
 class EmoteFormatter : InFormatter {
     private val prefixes = listOf("*","[!]","'s")
@@ -39,7 +40,7 @@ class EmoteFormatter : InFormatter {
                 prefixes.removeLast() //Understood to be the colon
                 prefixes.last.color = emoteColor //Understood to be the username
                 if (willNamelessEmote) prefixes.last.content = "[!] " //Retains hover and click stuff
-                else if (c.first.content.isEmpty() || c.first.content[0] != '\'' && c.first.content[0] != '\,') prefixes.addLast(Text(" "))
+                else if (c.first.content.isEmpty() || c.first.content[0] != '\'' && c.first.content[0] != ',') prefixes.addLast(Text(" "))
             }
 
         } else { //Must present as normal RP speech. Add quotes
