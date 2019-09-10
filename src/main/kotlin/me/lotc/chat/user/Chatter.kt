@@ -1,12 +1,11 @@
 package me.lotc.chat.user
 
-import me.lotc.chat.NativeChat
-import me.lotc.chat.channel.Channel
 import co.lotc.core.agnostic.Sender
 import co.lotc.core.bukkit.wrapper.BukkitSender
 import co.lotc.core.command.brigadier.TooltipProvider
 import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
+import me.lotc.chat.NativeChat
 import me.lotc.chat.ProxiedSender
 import me.lucko.luckperms.LuckPerms
 import me.lucko.luckperms.api.User
@@ -88,7 +87,9 @@ class Chatter(player: Player) {
          user.allNodes.stream().filter { it.isMeta }.filter{ it.value }.filter{it.isPermanent}.filter{ it.appliesGlobally() }
             .map { it.meta }.filter { it.key.startsWith("rp_") }.forEach { settings.put(it.key,it.value) }
 
-        settings["rp_channel"].forEach{chatManager.getByAlias(it)?.run(channels.subscribedChannels::add) }
+        settings["rp_channel"].mapNotNull { chatManager.getByAlias(it) }
+            .filter { player.hasPermission(it.permission) }
+            .forEach { channels.subscribedChannels.add(it) }
 
         chatManager.channels.stream().filter { it.isPermanent }
             .filter { !channels.isSubscribed(it) }
