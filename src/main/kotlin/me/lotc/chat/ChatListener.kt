@@ -1,20 +1,20 @@
 package me.lotc.chat
 
-import me.lotc.chat.message.Message
-import me.lotc.chat.channel.LocalChannel
-import me.lotc.chat.user.chat
 import co.lotc.core.bukkit.wrapper.BukkitSender
+import co.lotc.core.util.MessageUtil.asError
+import me.lotc.chat.channel.Channel
+import me.lotc.chat.channel.LOOCChannel
+import me.lotc.chat.channel.LocalChannel
+import me.lotc.chat.message.Message
+import me.lotc.chat.user.chat
+import net.md_5.bungee.api.ChatColor.*
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import net.md_5.bungee.api.ChatColor.*
-import co.lotc.core.util.MessageUtil.*
-import me.lotc.chat.channel.Channel
-import me.lotc.chat.channel.LOOCChannel
-import org.bukkit.entity.Player
 
 class ChatListener(private val plugin: NativeChat) : Listener {
 
@@ -125,10 +125,10 @@ class ChatListener(private val plugin: NativeChat) : Listener {
         if(cd <= 0 || d.player.hasPermission("chat.nocooldown") || d.player.hasPermission(c.permissionMod))
             return
 
-        val remaining = d.chatter.channels.getRemainingCooldown(c).seconds
+        val seconds = "%.2f".format(d.chatter.channels.getRemainingCooldown(c).toNanos() / 1000000000.0)
         if(d.chatter.channels.isOrSetCooldown(c)){
             d.shouldContinue = false
-            d.player.sendMessage( asError("You must wait $remaining seconds before talking in ${c.formattedTitle}") )
+            d.player.sendMessage( asError("You must wait $seconds seconds before talking in ${c.formattedTitle}") )
         }
     }
 
